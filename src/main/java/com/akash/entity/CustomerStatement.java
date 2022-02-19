@@ -1,5 +1,6 @@
 package com.akash.entity;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,9 +38,13 @@ public class CustomerStatement {
 	List<SalesStatement> sales;
 
 	String type;
+	Double discount;
+	
+	DecimalFormat df = new DecimalFormat("#.##");
 	
 	public CustomerStatement(long id, String receiptNumber, LocalDate date,Vehicle vehicle, String vehicleNo, String address,String site,
-			Double loading, Double unloading, Double carraige,Double credit) {
+			Double loading, Double unloading, Double carraige,Double discount,Double credit)
+	{
 		super();
 		this.id = id;
 		this.receiptNumber = receiptNumber;
@@ -52,6 +57,7 @@ public class CustomerStatement {
 		this.unloading = unloading;
 		this.carraige = carraige;
 		this.type = Constants.BILLBOOK;
+		this.discount=discount;
 		this.credit=credit;
 		if(site != null && !("".equals(site))){
 				this.address = site;
@@ -67,7 +73,8 @@ public class CustomerStatement {
 		this.unloading = this.unloading==null?Double.valueOf(0):this.unloading;
 		this.carraige = this.carraige==null?Double.valueOf(0):this.carraige;
 		this.credit = this.credit==null?Double.valueOf(0):this.credit;
-		this.amount = this.credit-(this.carraige+this.loading+this.unloading);
+		this.discount = this.discount==null?Double.valueOf(0):this.discount;
+		this.amount = this.credit-(this.carraige+this.loading+this.unloading-this.discount);
 	}
 
 
@@ -169,6 +176,8 @@ public class CustomerStatement {
 	}
 
 	public Double getBalance() {
+		if(balance !=null)
+			balance = Double.valueOf(df.format(balance));
 		return balance;
 	}
 
@@ -215,6 +224,22 @@ public class CustomerStatement {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+
+
+	
 	
 	
 	

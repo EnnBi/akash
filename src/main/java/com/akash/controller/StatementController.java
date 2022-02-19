@@ -34,6 +34,7 @@ import com.akash.repository.ManufactureRepository;
 import com.akash.repository.RawMaterialRepository;
 import com.akash.repository.UserTypeRepository;
 import com.akash.util.BillBookToCustomerStatement;
+import com.akash.util.CommonMethods;
 import com.akash.util.Constants;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -352,17 +353,9 @@ public class StatementController {
 	public List<CustomerStatement> generateCustomerStatement(StatementSearch search,Model model){
 		LocalDate previousDay = search.getStartDate().minusDays(1);
 		
-		Double prevBillBookCredit = billBookRepo.sumOfCustomerDebits(search.getUser(),LocalDate.MIN, previousDay);
-		Double prevDayBookCredit = dayBookRepo.findUserCredits(search.getUser(),LocalDate.MIN, previousDay);
-		Double prevDayBookDebit = dayBookRepo.findUserDebits(search.getUser(),LocalDate.MIN, previousDay);
-		
-		prevBillBookCredit = prevBillBookCredit==null?Double.valueOf(0):prevBillBookCredit;
-		prevDayBookCredit = prevDayBookCredit==null?Double.valueOf(0):prevDayBookCredit;
-		prevDayBookDebit = prevDayBookDebit==null?Double.valueOf(0):prevDayBookDebit;
-		
-		Double prevBalance = (prevBillBookCredit+prevDayBookCredit)-prevDayBookDebit;
-		Double balance = Double.valueOf(df.format(prevBalance));;
-		this.prevBalance=prevBalance;
+	
+		Double balance = CommonMethods.getBalance(search.getUser(), LocalDate.MIN, previousDay,billBookRepo,dayBookRepo);
+		this.prevBalance=balance;
 		
 		
 		List<BillBook> customerBillBook = billBookRepo.findByCustomer_IdAndDateBetween(search.getUser(),search.getStartDate(),search.getEndDate());

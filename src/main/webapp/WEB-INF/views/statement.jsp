@@ -583,6 +583,7 @@
 							<th>Loading</th>
 							<th>Unloading</th>
 							<th>Carriage</th>
+							<th>Discount</th>
 							<th>Debit</th>
 							<th>Credit</th>
 							<th>Balance</th>
@@ -613,6 +614,7 @@
 								<td>${s.loading}</td>
 								<td>${s.unloading}</td>
 								<td>${s.carraige}</td>
+								<td>${s.discount}</td>
 								<td>${s.debit}</td>
 								<td>${s.credit}</td>
 								<td>${s.balance}</td>

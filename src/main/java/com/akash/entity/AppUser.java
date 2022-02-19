@@ -35,6 +35,13 @@ public class AppUser {
 	@Column(name="contact")
 	private String contact;
 	
+	@Pattern(regexp = "^\\d{10}$", message = "Please Enter the 10 digits correctly")
+	@Column(name="contact_2")
+	private String contactTwo;
+	
+	@Pattern(regexp = "^\\d{10}$", message = "Please Enter the 10 digits correctly")
+	@Column(name="contact_3")
+	private String contactThree;
 	
 	@NotNull(message ="address is required")
 	@NotEmpty(message="address is required")
@@ -140,6 +147,21 @@ public class AppUser {
 	}
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	
+	
+	public String getContactTwo() {
+		return contactTwo;
+	}
+	public void setContactTwo(String contactTwo) {
+		this.contactTwo = contactTwo;
+	}
+	public String getContactThree() {
+		return contactThree;
+	}
+	public void setContactThree(String contactThree) {
+		this.contactThree = contactThree;
 	}
 	@Override
 	public String toString() {

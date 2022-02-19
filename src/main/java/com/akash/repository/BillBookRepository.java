@@ -43,8 +43,11 @@ public interface BillBookRepository extends CrudRepository<BillBook,Long>,BillBo
 
 	@Query("Select Sum(b.total) from BillBook b where b.customer.id = :id and b.date between :startDate and :endDate")
 	Double sumOfCustomerDebits(@Param("id") long id,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
+	
+	@Query("Select Sum(b.discount) from BillBook b where b.customer.id = :id and b.date between :startDate and :endDate")
+	Double sumOfCustomerDiscounts(@Param("id") long id,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	 
-	@Query("Select new com.akash.entity.CustomerStatement(b.id,b.receiptNumber,b.date,b.vehicle,b.otherVehicle,b.customer.address,b.sites,b.loadingAmount,b.unloadingAmount,b.carraige,b.total) from BillBook b where b.customer.id = :id and (b.date between :startDate and :endDate)")
+	@Query("Select new com.akash.entity.CustomerStatement(b.id,b.receiptNumber,b.date,b.vehicle,b.otherVehicle,b.customer.address,b.sites,b.loadingAmount,b.unloadingAmount,b.carraige,b.discount,b.total) from BillBook b where b.customer.id = :id and (b.date between :startDate and :endDate)")
 	List<CustomerStatement> findCustomerBillBookDebits(@Param("id") long id,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	 
 	@Query("Select new  com.akash.entity.SalesStatement(s.product.name,s.size.name,s.quantity,s.unitPrice,s.amount) from Sales s where s.billBook.id = :id")

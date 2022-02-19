@@ -48,7 +48,7 @@ public class AppUserCustomizedRepositoryImpl implements AppUserCustomizedReposit
 			predicates.add(cb.equal(root.get("ledgerNumber"),appUserSearch.getLedgerNumber()));
 		
 		if(isNotNullOrNotEmpty(appUserSearch.getContact()))
-			predicates.add(cb.equal(root.get("contact"),appUserSearch.getContact()));
+			predicates.add(cb.or(cb.equal(root.get("contact"),appUserSearch.getContact()),cb.equal(root.get("contactTwo"),appUserSearch.getContact()),cb.equal(root.get("contactThree"),appUserSearch.getContact())));
 		
 		if(isNotNullOrNotEmpty(appUserSearch.getName()))
 			predicates.add(cb.like(root.get("name"),"%"+appUserSearch.getName()+"%"));

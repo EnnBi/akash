@@ -55,6 +55,27 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Contact 2</label>
+							<div class="col-sm-9">
+							<form:input type="text" class="form-control" path="contactTwo" placeholder="Enter Contact Three "/>
+							
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Contact 3</label>
+							<div class="col-sm-9">
+								<form:input type="text" class="form-control" path="contactThree" placeholder="Enter Contact Two"/>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group row">
 							<label class="col-sm-3 col-form-label">Name</label>
 							<div class="col-sm-9">
 								<form:input type="text" class="form-control" path="name" />

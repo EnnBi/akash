@@ -80,6 +80,26 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Loading Rate</label>
+							<div class="col-sm-9">
+								<form:input type="text" class="form-control" path="loadingRate" required="required"/>
+								
+							</div>
+						</div>
+						</div>
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">UnLoading Rate</label>
+							<div class="col-sm-9">
+								<form:input type="text" class="form-control" path="unloadingRate" required="required"/>
+								
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="form-group row float-right">
 					<input type="submit" class="btn btn-success btn-fw"
 						 value="${caption}">
@@ -102,6 +122,8 @@
 							<th>Size</th>
 							<th>Group</th>
 							<th>Rate</th>
+							<th>LoadingRate</th>
+							<th>unLoadingRate</th>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -116,6 +138,9 @@
 								<td>${lc.size.name}</td>
 								<td>${lc.labourGroup.name}</td>
 								<td>${lc.rate}</td>
+								<td>${lc.loadingRate}</td>
+								<td>${lc.unloadingRate}</td>
+								
 								<td><a href="${updatelink}/${lc.id}"
 									class="btn btn-success btn-fw" style="margin-right: 5px">Edit</a><a
 									href="${deletelink}/${lc.id}"

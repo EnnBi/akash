@@ -85,7 +85,7 @@ line-height: 10px
 									<form:option value="">Select Customer</form:option>
 									<c:forEach var="customer" items="${customers}">
 										<form:option value="${customer.id}"
-											contact="${customer.contact}" address="${customer.address}">
+											contact="${customer.contact}" address="${customer.address}" contact2="${customer.contactTwo}" contact3="${customer.contactThree}">
 											<c:out value="${customer.name} ${customer.address}" />
 										</form:option>
 									</c:forEach>
@@ -117,6 +117,27 @@ line-height: 10px
 							<label class="col-sm-4 col-form-label">Address</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" id="address"
+									readonly="true">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Contact 2</label>
+							<div class="col-sm-8">
+								<input class="form-control" type="text" id="contact2"
+									readonly="true" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Contact3</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control" id="contact3"
 									readonly="true">
 							</div>
 						</div>
@@ -223,6 +244,16 @@ line-height: 10px
 											id="unloaders" multiple="multiple">
 											
 										</form:select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group row">
+									<label class="col-sm-4 col-form-label">Current Balance</label>
+									<div class="col-sm-8">
+										<input type="text" id="prevBalance" disabled="disabled"/>
 									</div>
 								</div>
 							</div>
@@ -418,8 +449,12 @@ line-height: 10px
 			var id = $(this).val();
 			var address = $('option:selected', this).attr('address');
 			var contact = $('option:selected', this).attr('contact');
+			var contact2 = $('option:selected', this).attr('contact2');
+			var contact3 = $('option:selected', this).attr('contact3');
 			$('#address').val(address);
 			$('#contact').val(contact);
+			$('#contact2').val(contact2);
+			$('#contact3').val(contact3);
 		
 			var url = "${pageContext.request.contextPath}/user/" + id + "/sites";
 			$.get(url, function(data) {
@@ -432,6 +467,11 @@ line-height: 10px
 											value.id)
 									.text(value.name));
 				});
+			});
+			alert("i'm in")
+			var urlBalance = "${pageContext.request.contextPath}/bill-book/customer/"+id;
+			$.get(urlBalance,function(data){
+				$("#prevBalance").val(data);
 			});
 		});
 

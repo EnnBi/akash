@@ -34,6 +34,13 @@ public class LabourCost {
 	@JoinColumn(name="Size")
 	Size size;
 	
+	@Column(name = "Loading_Rate")
+	private Double loadingRate;
+
+	@Column(name = "Unloading_Rate")
+	private Double unloadingRate;
+
+	
 	public LabourCost() {
 		super();
 	}
@@ -77,5 +84,22 @@ public class LabourCost {
 	public void setSize(Size size) {
 		this.size = size;
 	}
+
+	public Double getLoadingRate() {
+		return loadingRate;
+	}
+
+	public void setLoadingRate(Double loadingRate) {
+		this.loadingRate = loadingRate;
+	}
+
+	public Double getUnloadingRate() {
+		return unloadingRate;
+	}
+
+	public void setUnloadingRate(Double unloadingRate) {
+		this.unloadingRate = unloadingRate;
+	}
+	
 	
 }

@@ -118,8 +118,12 @@
 							<tr>
 
 								<td>${templist.userType.name}</td>
-								<td>${templist.name}</td>
-								<td>${templist.contact}</td>
+								<td>${templist.name}</td>\
+								<td>
+								${templist.contact} </br>
+								${templist.contactTwo}  </br>
+								${templist.contactThree}	
+								</td>
 								<td>${templist.ledgerNumber}</td>
 								<td>${templist.accountNumber}</td>
 								<td><a href="${updatelink}/${templist.id}"

@@ -18,4 +18,5 @@ public interface Constants {
 	String DAYBOOK ="DayBook";
 	String MANUFACTURE ="Manufactre";
 	String RAW_MATERIAL ="RawMaterial";
+	String DUES="Dues";
 }

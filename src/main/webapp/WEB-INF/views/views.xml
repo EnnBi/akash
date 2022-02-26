@@ -113,4 +113,15 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/inventory.jsp" />
 	</definition>
+	
+	<definition name="cleardues" extends="base">
+		<put-attribute name="title" value="Daybook" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/cleardues.jsp" />
+	</definition>
+	<definition name="balancesheet" extends="base">
+		<put-attribute name="title" value="Daybook" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/balancesheet.jsp" />
+	</definition>
 </tiles-definitions>

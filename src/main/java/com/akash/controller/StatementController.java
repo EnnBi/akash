@@ -29,6 +29,7 @@ import com.akash.entity.OwnerStatement;
 import com.akash.entity.StatementSearch;
 import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
+import com.akash.repository.ClearDuesRepository;
 import com.akash.repository.DayBookRepository;
 import com.akash.repository.ManufactureRepository;
 import com.akash.repository.RawMaterialRepository;
@@ -67,6 +68,8 @@ public class StatementController {
 	UserTypeRepository userTypeRepo;
 	@Autowired
 	AppUserRepository appUserRepo;
+	@Autowired
+	ClearDuesRepository clearDuesRepository;
 	
 	Double prevBalance = 0.0;
 	String prevDate= LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
@@ -354,7 +357,7 @@ public class StatementController {
 		LocalDate previousDay = search.getStartDate().minusDays(1);
 		
 	
-		Double balance = CommonMethods.getBalance(search.getUser(), LocalDate.MIN, previousDay,billBookRepo,dayBookRepo);
+		Double balance = CommonMethods.getBalance(search.getUser(), LocalDate.MIN, previousDay,billBookRepo,dayBookRepo,clearDuesRepository);
 		this.prevBalance=balance;
 		
 		
@@ -366,11 +369,12 @@ public class StatementController {
 		
 		List<CustomerStatement> dayBookCreditEntries = dayBookRepo.findCustomerCreditsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		List<CustomerStatement> dayBookDebitEntries = dayBookRepo.findCustomerDebitsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
-		
+		List<CustomerStatement> clearDuesEntries=clearDuesRepository.findCustomerClearDuesBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		List<CustomerStatement> statements = new ArrayList<>();
 		statements.addAll(billBookCreditEntries);
 		statements.addAll(dayBookCreditEntries);
 		statements.addAll(dayBookDebitEntries);
+		statements.addAll(clearDuesEntries);
 		
 		Collections.sort(statements, (a, b) -> a.getDate().compareTo(b.getDate()));
 		
@@ -378,7 +382,11 @@ public class StatementController {
 			if(Constants.BILLBOOK.equals(s.getType())){
 				s.setBalance(balance+s.getCredit());
 				balance=balance+s.getCredit();
-			}else{
+			}else if(Constants.DUES.equals(s.getType())) {
+				s.setBalance(balance-s.getDebit());
+				balance=balance-s.getDebit();
+			}
+			else{
 				if(s.getDebit() != null){
 					s.setBalance(balance-s.getDebit());
 					balance=balance-s.getDebit();

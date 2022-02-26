@@ -72,13 +72,13 @@ line-height: 10px
 									<c:forEach var="customer" items="${customers}">
 									 <c:if test="${billBook.customer.id eq customer.id}">
 									 	<form:option value="${customer.id}" selected="selected"
-											contact="${customer.contact}" address="${customer.address}" contact2="${customer.contactTwo}" contact3="${customer.contactThree}">
+											contact="${customer.contact}" address="${customer.address}">
 											<c:out value="${customer.name} ${customer.address}" />
 										</form:option>
 									 </c:if>
 									 <c:if test="${billBook.customer.id ne customer.id}">
 										 <form:option value="${customer.id}"
-												contact="${customer.contact}" address="${customer.address}" contact2="${customer.contactTwo}" contact3="${customer.contactThree}">
+												contact="${customer.contact}" address="${customer.address}" >
 												<c:out value="${customer.name} ${customer.address}" />
 											</form:option>
 									 </c:if>

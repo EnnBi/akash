@@ -31,6 +31,7 @@ import com.akash.entity.Sales;
 import com.akash.entity.dto.BillBookDTO;
 import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
+import com.akash.repository.ClearDuesRepository;
 import com.akash.repository.DayBookRepository;
 import com.akash.repository.LabourCostRepository;
 import com.akash.repository.LabourGroupRepository;
@@ -75,6 +76,8 @@ public class BillBookController {
 	LabourGroupRepository labourGroupRepository;
 	@Autowired
 	DayBookRepository dayBookRepo;
+	@Autowired
+	ClearDuesRepository clearDuesRepo;
 
 	int from = 0;
 	int total = 0;
@@ -160,7 +163,7 @@ public class BillBookController {
 	@GetMapping("/customer/{id}")
 	@ResponseBody
 	public Double getBalance(@PathVariable Long id) {
-		return CommonMethods.getBalance(id, LocalDate.MIN, LocalDate.now(), billBookRepository, dayBookRepo);
+		return CommonMethods.getBalance(id, LocalDate.MIN, LocalDate.now(), billBookRepository, dayBookRepo,clearDuesRepo);
 	}
 
 	@PostMapping("/search")

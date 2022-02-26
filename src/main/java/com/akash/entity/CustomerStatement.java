@@ -94,6 +94,14 @@ public class CustomerStatement {
 		this.reference=reference+"-"+transactionNumber;
 		this.type=Constants.DAYBOOK;
 	}
+	
+	public CustomerStatement(Double debit,LocalDate date,String ownerName) {
+		super();
+		this.date = date;
+		this.debit = debit;
+		this.reference="DUES-"+ownerName;
+		this.type=Constants.DUES;
+	}
 
 	public long getId() {
 		return id;

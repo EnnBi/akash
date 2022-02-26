@@ -31,6 +31,13 @@ public interface AppUserRepository extends CrudRepository<AppUser, Long>,AppUser
 	
 	List<AppUser> findByUserType_NameAndLabourGroup_IdAndActive(String userType,long id,boolean active);
 	
+	public List<AppUserProjection> findByUserType_IdAndActive(long id,boolean active);
+	
+	@Query("Select a from AppUser a where a.userType.name in :userType")
+	public List<AppUser> findAllAppUsersOnType(@Param("userType") String[] userType);
+	
+	
+	
 	
 }
  

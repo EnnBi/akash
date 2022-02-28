@@ -19,4 +19,5 @@ public interface Constants {
 	String MANUFACTURE ="Manufactre";
 	String RAW_MATERIAL ="RawMaterial";
 	String DUES="Dues";
+	String RG="RG";
 }

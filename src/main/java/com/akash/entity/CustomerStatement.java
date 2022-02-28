@@ -102,6 +102,13 @@ public class CustomerStatement {
 		this.reference="DUES-"+ownerName;
 		this.type=Constants.DUES;
 	}
+	public CustomerStatement(LocalDate date,Double debit,String recieptNumber) {
+		super();
+		this.date = date;
+		this.debit = debit;
+		this.reference="RG-"+recieptNumber;
+		this.type=Constants.RG;
+	}
 
 	public long getId() {
 		return id;

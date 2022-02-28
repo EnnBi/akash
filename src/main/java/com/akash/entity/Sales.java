@@ -38,6 +38,9 @@ public class Sales {
 	@JoinColumn(name="bill_book")
 	BillBook billBook;
 	
+	@ManyToOne
+	@JoinColumn(name="good_return")
+	GoodsReturn goodsReturn;
 
 	public long getId() {
 		return id;
@@ -93,6 +96,15 @@ public class Sales {
 
 	public void setBillBook(BillBook billBook) {
 		this.billBook = billBook;
+	}
+	
+
+	public GoodsReturn getGoodsReturn() {
+		return goodsReturn;
+	}
+
+	public void setGoodsReturn(GoodsReturn goodsReturn) {
+		this.goodsReturn = goodsReturn;
 	}
 
 	@Override

@@ -67,20 +67,11 @@ public class GoodsReturn {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinColumn(name = "Bill_Book")
+	@JoinColumn(name = "Goods_Return")
 	List<Sales> sales;
 
-	@NotNull(message = "Please select Loaders")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@ManyToMany
-	@JoinTable(name = "BillBook_Loaders")
-	List<AppUser> loaders;
-
-	@NotNull(message = "Please select Unloaders")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@ManyToMany
-	@JoinTable(name = "BillBook_Unloaders")
-	List<AppUser> unloaders;
+	
+	
 
 	@Column(name = "carriage")
 	private Double carraige;
@@ -205,21 +196,8 @@ public class GoodsReturn {
 		this.sales = sales;
 	}
 
-	public List<AppUser> getLoaders() {
-		return loaders;
-	}
-
-	public void setLoaders(List<AppUser> loaders) {
-		this.loaders = loaders;
-	}
-
-	public List<AppUser> getUnloaders() {
-		return unloaders;
-	}
-
-	public void setUnloaders(List<AppUser> unloaders) {
-		this.unloaders = unloaders;
-	}
+	
+	
 
 	public Double getCarraige() {
 		return carraige;
@@ -234,7 +212,12 @@ public class GoodsReturn {
 	}
 
 	public void setLoadingAmountPerHead(Double loadingAmountPerHead) {
+		if(loadingAmountPerHead != null) {
 		this.loadingAmountPerHead = Double.valueOf(df.format(loadingAmountPerHead));
+		}
+		else {
+			this.loadingAmountPerHead=loadingAmountPerHead;
+		}
 	}
 
 	public Double getUnloadingAmountPerHead() {
@@ -242,7 +225,12 @@ public class GoodsReturn {
 	}
 
 	public void setUnloadingAmountPerHead(Double unloadingAmountPerHead) {
+		if(unloadingAmountPerHead !=null) {
 		this.unloadingAmountPerHead = Double.valueOf(df.format(unloadingAmountPerHead));
+		}
+		else {
+			this.unloadingAmountPerHead = unloadingAmountPerHead;
+		}
 	}
 
 	public String getSites() {
@@ -274,7 +262,12 @@ public class GoodsReturn {
 	}
 
 	public void setDriverLoadingCharges(Double driverLoadingCharges) {
+		if(driverLoadingCharges != null) {
 		this.driverLoadingCharges = Double.valueOf(df.format(driverLoadingCharges));
+		}
+		else {
+			this.driverLoadingCharges=driverLoadingCharges;
+		}
 	}
 
 	public Double getDriverUnloadingCharges() {
@@ -282,7 +275,13 @@ public class GoodsReturn {
 	}
 
 	public void setDriverUnloadingCharges(Double driverUnloadingCharges) {
+		if(driverUnloadingCharges != null) {
 		this.driverUnloadingCharges = Double.valueOf(df.format(driverUnloadingCharges));
+		}
+		else {
+			this.driverUnloadingCharges=driverUnloadingCharges;
+			
+		}
 	}
 
 	public AppUser getDriver() {

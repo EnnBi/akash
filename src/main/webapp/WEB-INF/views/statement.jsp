@@ -109,14 +109,25 @@
 					
 				</div>
 				<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-4">
 						<div class="form-group row">
-							<label class="col-sm-6 col-form-label">Balance upto ${prevDate}:</label>
+							<label class="col-sm-4 col-form-label">Balance upto ${prevDate}:</label>
 							<label class="col-sm-6 col-form-label">${previousBalance}</label>
 						</div>
 					</div>
 					
-					<div class="col-md-2">
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Credit:</label>
+							<label class="col-sm-8 col-form-label">${totalCredit}</label>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Debit</label>
+							<label class="col-sm-8 col-form-label">${totalDebit}</label>
+						</div>
+					</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group row">
@@ -228,6 +239,19 @@
 					</div>
 					
 					<div class="col-md-2">
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Credit:</label>
+							<label class="col-sm-8 col-form-label">${totalCredit}</label>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Debit</label>
+							<label class="col-sm-8 col-form-label">${totalDebit}</label>
+						</div>
+					</div>
+					</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group row">
@@ -337,6 +361,19 @@
 					</div>
 					
 					<div class="col-md-2">
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Credit:</label>
+							<label class="col-sm-8 col-form-label">${totalCredit}</label>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Debit</label>
+							<label class="col-sm-8 col-form-label">${totalDebit}</label>
+						</div>
+					</div>
+					</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group row">
@@ -548,6 +585,19 @@
 							<label class="col-sm-6 col-form-label">Balance upto ${prevDate}:</label>
 							<label class="col-sm-6 col-form-label">${previousBalance}</label>
 						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Credit:</label>
+							<label class="col-sm-8 col-form-label">${totalCredit}</label>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group row">
+							<label class="col-sm-4 col-form-label">Total Debit</label>
+							<label class="col-sm-8 col-form-label">${totalDebit}</label>
+						</div>
+					</div>
 					</div>
 					
 					<div class="col-md-2">

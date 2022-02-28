@@ -124,4 +124,20 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/balancesheet.jsp" />
 	</definition>
+	<definition name="goodsreturnsearch" extends="base">
+		<put-attribute name="title" value="Daybook" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/goodsReturnSearch.jsp" />
+	</definition>
+	<definition name="goodsreturnadd" extends="base">
+		<put-attribute name="title" value="Daybook" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/goodsReturnAdd.jsp" />
+	</definition>
+	 <definition name="goodsreturneditsearch" extends="base">
+		<put-attribute name="title" value="Daybook" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/goodsReturnEditSearch.jsp" />
+	</definition> 
+	
 </tiles-definitions>

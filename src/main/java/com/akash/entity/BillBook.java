@@ -178,7 +178,12 @@ public class BillBook {
 	}
 
 	public Double getLoadingAmount() {
-		return loadingAmount;
+		if(loadingAmount != null) {
+			return loadingAmount;
+		}
+		else {
+                return Double.valueOf(0.0);			
+		}
 	}
 
 	public void setLoadingAmount(Double loadingAmount) {
@@ -186,7 +191,13 @@ public class BillBook {
 	}
 
 	public Double getUnloadingAmount() {
-		return unloadingAmount;
+		if(unloadingAmount != null) {
+			return unloadingAmount;
+		}
+		else {
+                return Double.valueOf(0.0);			
+		}
+		
 	}
 
 	public void setUnloadingAmount(Double unloadingAmount) {
@@ -242,7 +253,13 @@ public class BillBook {
 	}
 
 	public Double getCarraige() {
-		return carraige;
+		if(carraige != null) {
+			return carraige;
+		}
+		else {
+			return Double.valueOf(0.0);
+		}
+		
 	}
 
 	public void setCarraige(Double carraige) {

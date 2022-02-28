@@ -31,6 +31,7 @@ import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
 import com.akash.repository.ClearDuesRepository;
 import com.akash.repository.DayBookRepository;
+import com.akash.repository.GoodsReturnRepository;
 import com.akash.repository.ManufactureRepository;
 import com.akash.repository.RawMaterialRepository;
 import com.akash.repository.UserTypeRepository;
@@ -70,8 +71,12 @@ public class StatementController {
 	AppUserRepository appUserRepo;
 	@Autowired
 	ClearDuesRepository clearDuesRepository;
+	@Autowired
+	GoodsReturnRepository goodsReturnRepository;
 	
 	Double prevBalance = 0.0;
+	Double totalCredit=0.0;
+	Double totalDebit=0.0;
 	String prevDate= LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 	DecimalFormat df = new DecimalFormat("#.##");
 	
@@ -118,6 +123,8 @@ public class StatementController {
 		model.addAttribute("user", appUserRepo.findById(statementSearch.getUser()).orElse(null));
 		model.addAttribute("statementSearch", statementSearch);
 		model.addAttribute("previousBalance", prevBalance);
+		model.addAttribute("totalCredit", totalCredit);
+		model.addAttribute("totalDebit", totalDebit);
 		model.addAttribute("prevDate", statementSearch.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		return "statement";
 	}
@@ -167,22 +174,8 @@ public class StatementController {
 	public List<DriverStatement> generateDriverStatement(StatementSearch statementSearch,Model model) {
 		LocalDate previousDay = statementSearch.getStartDate().minusDays(1);
 		AppUser driver = appUserRepo.findById(statementSearch.getUser()).orElse(null);
-		Double previousCarraige = billBookRepo.sumOfCarraige(statementSearch.getUser(), LocalDate.MIN, previousDay);
-		Double previousLoading = billBookRepo.sumOfDriverLoading(driver, LocalDate.MIN, previousDay);
-		Double previousUnloading = billBookRepo.sumOfDriverUnloading(driver, LocalDate.MIN, previousDay);
-		Double previousDebit = dayBookRepo.findUserDebits(statementSearch.getUser(), LocalDate.MIN, previousDay);
-
-		Double previousCredit = dayBookRepo.findUserCredits(statementSearch.getUser(), LocalDate.MIN, previousDay);
-
-		previousCarraige = previousCarraige == null ? Double.valueOf(0) : previousCarraige;
-		previousLoading = previousLoading == null ? Double.valueOf(0) : previousLoading;
-		previousUnloading = previousUnloading == null ? Double.valueOf(0) : previousUnloading;
-		previousDebit = previousDebit == null ? Double.valueOf(0) : previousDebit;
-		previousCredit = previousCredit == null ? Double.valueOf(0) : previousCredit;
-
-		Double previousBalance = (previousCarraige + previousLoading + previousUnloading + previousDebit)
-				- previousCredit;
-		this.prevBalance=Double.valueOf(df.format(previousBalance));;
+		Double previousBalance=CommonMethods.getDriverCredit(statementSearch.getUser(), LocalDate.MIN, previousDay, dayBookRepo)-
+				CommonMethods.getDriverDebit(statementSearch.getUser(), LocalDate.MIN, previousDay, dayBookRepo, billBookRepo, appUserRepo);
 		Double balance = previousBalance;
 
 		List<DriverStatement> billBookEntries = billBookRepo.findDriverDebits(driver, statementSearch.getStartDate(),
@@ -203,13 +196,16 @@ public class StatementController {
 			if (Constants.BILLBOOK.equals(s.getType())) {
 				s.setBalance(balance + s.getDebit());
 				balance = balance + s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
 			} else {
 				if (s.getCredit() != null) {
 					s.setBalance(balance - s.getCredit());
 					balance = balance - s.getCredit();
+					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
 					s.setBalance(balance + s.getDebit());
 					balance = balance + s.getDebit();
+					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
 			}
@@ -221,15 +217,8 @@ public class StatementController {
 	public List<DealerStatement> generateDealerStatement(StatementSearch statementSearch,Model model) {
 		LocalDate previousDay = statementSearch.getStartDate().minusDays(1);
 
-		Double sumPreviousDebit = rawMaterialRepo.sumDebits(statementSearch.getUser(), LocalDate.MIN, previousDay); 
-		Double sumDayBookDebit = dayBookRepo.findUserDebits(statementSearch.getUser(), LocalDate.MIN, previousDay);
-		Double sumDayBookCredit = dayBookRepo.findUserCredits(statementSearch.getUser(), LocalDate.MIN, previousDay);
-		
-		sumPreviousDebit = sumPreviousDebit == null ? Double.valueOf(0) : sumPreviousDebit;
-		sumDayBookDebit = sumDayBookDebit == null ? Double.valueOf(0) : sumDayBookDebit;
-		sumDayBookCredit = sumDayBookCredit == null ? Double.valueOf(0) : sumDayBookCredit;
-		
-		Double previousBalance = (sumPreviousDebit+sumDayBookDebit)-sumDayBookCredit;
+		Double previousBalance = CommonMethods.getDealerCredit(statementSearch.getUser(),LocalDate.MIN, previousDay, dayBookRepo)-CommonMethods.getDealerDebit(statementSearch.getUser(),LocalDate.MIN, previousDay, dayBookRepo, rawMaterialRepo);
+				
 		Double balance=previousBalance;
 		this.prevBalance=Double.valueOf(df.format(previousBalance));;
 		
@@ -248,13 +237,16 @@ public class StatementController {
 			if (Constants.RAW_MATERIAL.equals(s.getType())) {
 				s.setBalance(balance + s.getDebit());
 				balance = balance + s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
 			} else {
 				if (s.getCredit() != null) {
 					s.setBalance(balance - s.getCredit());
 					balance = balance - s.getCredit();
+					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
 					s.setBalance(balance + s.getDebit());
 					balance = balance + s.getDebit();
+					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
 			}
@@ -267,19 +259,9 @@ public class StatementController {
 		LocalDate previousDay = search.getStartDate().minusDays(1);
 		AppUser labour = appUserRepo.findById(search.getUser()).orElse(null);
 		
-		Double prevLoadingDebit = billBookRepo.sumOfLabourLoading(labour, LocalDate.MIN,previousDay);
-		Double prevUnloadingDebit = billBookRepo.sumOfLabourUnloading(labour, LocalDate.MIN,previousDay);
-		Double prevManufactureDebit = manufactureRepo.sumManufactureDebits(labour,LocalDate.MIN,previousDay);
-		Double prevDayBookDebit = dayBookRepo.findUserDebits(search.getUser(), LocalDate.MIN,previousDay);
-		Double prevDayBookCredit = dayBookRepo.findUserCredits(search.getUser(), LocalDate.MIN,previousDay);
-		
-		prevLoadingDebit = prevLoadingDebit==null?Double.valueOf(0):prevLoadingDebit;
-		prevUnloadingDebit = prevUnloadingDebit==null?Double.valueOf(0):prevUnloadingDebit;
-		prevManufactureDebit = prevManufactureDebit==null?Double.valueOf(0):prevManufactureDebit;
-		prevDayBookDebit = prevDayBookDebit==null?Double.valueOf(0):prevDayBookDebit;
-		prevDayBookCredit = prevDayBookCredit==null?Double.valueOf(0):prevDayBookCredit;
-		
-		Double previousBalance = (prevLoadingDebit+prevUnloadingDebit+prevManufactureDebit+prevDayBookDebit)-prevDayBookCredit;
+		Double previousBalance=CommonMethods.getLabourCredit(search.getUser(), LocalDate.MIN, previousDay, dayBookRepo)-
+				CommonMethods.getLabourDebit(search.getUser(), LocalDate.MIN, previousDay, dayBookRepo, appUserRepo, billBookRepo, manufactureRepo);
+				
 		Double balance = previousBalance;
 		this.prevBalance=Double.valueOf(df.format(previousBalance));
 		
@@ -301,17 +283,21 @@ public class StatementController {
 			if (Constants.MANUFACTURE.equals(s.getType())) {
 				s.setBalance(balance + s.getDebit());
 				balance = balance + s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
 			}
 			else if(Constants.BILLBOOK.equals(s.getType())){
 				s.setBalance(balance+s.getDebit());
 				balance=balance+s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
 			}else {
 				if (s.getCredit() != null) {
 					s.setBalance(balance - s.getCredit());
 					balance = balance - s.getCredit();
+					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
 					s.setBalance(balance + s.getDebit());
 					balance = balance + s.getDebit();
+					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
 			}
@@ -323,15 +309,8 @@ public class StatementController {
 	public List<OwnerStatement> generateOwnerStatement(StatementSearch search,Model model){
 		LocalDate previousDay = search.getStartDate().minusDays(1);
 		AppUser owner = appUserRepo.findById(search.getUser()).orElse(null);
-		
-		Double previousDebit = dayBookRepo.findOwnerDebit(owner.getAccountNumber(),LocalDate.MIN,previousDay);
-		Double previousCredit = dayBookRepo.findOwnerCredit(owner.getAccountNumber(),LocalDate.MIN, previousDay);
-		
-		previousCredit=previousCredit==null?Double.valueOf(0):previousCredit;
-		previousDebit=previousDebit==null?Double.valueOf(0):previousDebit; 
-		
-		Double prevBalance = previousCredit-previousDebit;
-		this.prevBalance=Double.valueOf(df.format(prevBalance));;
+		Double prevBalance=CommonMethods.getOwnerCredit(search.getUser(), LocalDate.MIN, previousDay, dayBookRepo, appUserRepo)-
+				CommonMethods.getOwnerDebit(search.getUser(), LocalDate.MIN, previousDay, dayBookRepo, appUserRepo);
 		Double balance = prevBalance;
 		
 		List<OwnerStatement> statements = dayBookRepo.findByAccountNumberAndDateBetween(owner.getAccountNumber(),search.getStartDate(),search.getEndDate());
@@ -356,8 +335,8 @@ public class StatementController {
 	public List<CustomerStatement> generateCustomerStatement(StatementSearch search,Model model){
 		LocalDate previousDay = search.getStartDate().minusDays(1);
 		
-	
-		Double balance = CommonMethods.getBalance(search.getUser(), LocalDate.MIN, previousDay,billBookRepo,dayBookRepo,clearDuesRepository);
+		Double balance = CommonMethods.getCustomerCredit(search.getUser(), LocalDate.MIN, previousDay, billBookRepo, dayBookRepo, goodsReturnRepository, clearDuesRepository)-
+				CommonMethods.getCustomerDebit(search.getUser(), previousDay, previousDay, dayBookRepo);
 		this.prevBalance=balance;
 		
 		
@@ -385,15 +364,25 @@ public class StatementController {
 			}else if(Constants.DUES.equals(s.getType())) {
 				s.setBalance(balance-s.getDebit());
 				balance=balance-s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
+			}
+			else if(Constants.RG.equals(s.getType())){
+				s.setBalance(balance-s.getDebit());
+				balance=balance-s.getDebit();
+				this.totalDebit=this.totalDebit+s.getDebit();
+				
 			}
 			else{
 				if(s.getDebit() != null){
 					s.setBalance(balance-s.getDebit());
 					balance=balance-s.getDebit();
+					this.totalDebit=this.totalDebit+s.getDebit();
+					
 				}
 				else{
 					s.setBalance(balance+s.getCredit());
 					balance=balance+s.getCredit();
+					this.totalCredit=this.totalCredit+s.getCredit();
 				}
 			}
 		}

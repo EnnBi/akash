@@ -22,6 +22,7 @@ import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
 import com.akash.repository.ClearDuesRepository;
 import com.akash.repository.DayBookRepository;
+import com.akash.repository.GoodsReturnRepository;
 import com.akash.repository.UserTypeRepository;
 import com.akash.util.CommonMethods;
 import com.akash.util.Constants;
@@ -43,6 +44,9 @@ public class ClearDuesController {
 	
 	@Autowired
 	DayBookRepository daybookRepo;
+	
+	@Autowired
+	GoodsReturnRepository goodsReturnRepo;
 	
 	@GetMapping
 	public String add(Model model, HttpSession session) {
@@ -78,7 +82,7 @@ public class ClearDuesController {
 		
 		int page = (int) session.getAttribute("currentPage");
 		pagination(page, model);
-		model.addAttribute("balance",CommonMethods.getBalance(clearDues.getUser().getId(),LocalDate.MIN, LocalDate.now(),billBookRepo,daybookRepo, clearDuesRepository));
+		model.addAttribute("balance",CommonMethods.getCustomerBalance(clearDues.getUser().getId(),LocalDate.MIN, LocalDate.now(),billBookRepo,daybookRepo, clearDuesRepository,goodsReturnRepo));
 		model.addAttribute("customers", appUserRepository.findByUserType_IdAndActive(clearDues.getUser().getUserType().getId(), true));
 		return "cleardues";
 	}

@@ -2,6 +2,7 @@ package com.akash.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -59,6 +60,10 @@ public class RawMaterialController {
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("rawMaterial") RawMaterial rawMaterial, BindingResult result, Model model,
 			RedirectAttributes redirect) {
+		
+		if(Objects.isNull(rawMaterial.getDate())){
+			rawMaterial.setDate(LocalDate.now());
+		}
 
 		if (result.hasErrors()) {
 			redirect.addFlashAttribute("rawMaterial", rawMaterial);
@@ -76,7 +81,7 @@ public class RawMaterialController {
 
 		else {
 
-			rawMaterial.setDate(LocalDate.now());
+			
 			rawMaterialRepository.save(rawMaterial);
 			redirect.addFlashAttribute("success", "Raw Material Saved Successfully");
 			return "redirect:/raw-material";
@@ -120,6 +125,10 @@ public class RawMaterialController {
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("rawMaterial") RawMaterial rawMaterial, BindingResult result,
 			RedirectAttributes redirect, HttpSession session, Model model) {
+		
+		if(Objects.isNull(rawMaterial.getDate())){
+			rawMaterial.setDate(LocalDate.now());
+		}
 
 		int page = (int) session.getAttribute("currentPage");
 		// pagination(page,model);

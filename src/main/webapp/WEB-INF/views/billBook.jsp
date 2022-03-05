@@ -251,10 +251,7 @@ line-height: 10px
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group row">
-									<label class="col-sm-4 col-form-label">Current Balance</label>
-									<div class="col-sm-8">
-										<input type="text" id="prevBalance" disabled="disabled"/>
-									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -334,6 +331,32 @@ line-height: 10px
 									<div class="col-sm-4">
 										<form:input type="text" class="form-control" path="discount"
 											id="discount"  />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right">Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<form:input type="text" class="form-control" path="balance"
+											readonly="true" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right">Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<form:input type="text" class="form-control" path="balance"
+											readonly="true" />
 									</div>
 								</div>
 							</div>
@@ -569,7 +592,7 @@ line-height: 10px
 							updatePaid();
 						}
 
-						function updatePaid() {
+						function updatePaid() { 
 							var total = Number($('#total').val());
 							var paid = Number($('#paid').val());
 							var discount = Number($('#discount').val());

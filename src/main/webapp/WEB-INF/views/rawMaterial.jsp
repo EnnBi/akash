@@ -98,6 +98,18 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Date</label>
+							<div class="col-sm-9">
+								<form:input type="text" class="form-control date" path="date"
+									required="required" />
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="form-group row float-right">
 					<input type="submit" class="btn btn-success btn-fw"
 						value="${caption}">

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -105,6 +106,9 @@ public class BillBookController {
 	@RequestMapping(value = "/save", params = "save", method = RequestMethod.POST)
 	public String save(@ModelAttribute("billBook") BillBook billBook, Model model,
 			RedirectAttributes redirectAttributes) {
+		if(Objects.isNull(billBook.getDate())){
+			billBook.setDate(LocalDate.now());
+		}
 		if (billBook.getVehicle() != null)
 			billBook.setDriver(billBook.getVehicle().getDriver());
 		if (billBook.getLoadingAmount() != null || billBook.getUnloadingAmount() != null)

@@ -25,7 +25,6 @@
 
 				<div class="row">
 				<div class="col-md-12">
-					
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label">Person Type</label>
 							
@@ -36,12 +35,11 @@
 									</c:forEach>
 								</select>
 						</div>
-					
-					
-				
-				
 				<div class="form-group row float-right">
 					<button class="btn btn-success btn-fw" type="submit" id="Search" name="view" style="margin-right: 2rem;">Submit</button>
+				</div>
+				<div class="form-group row float-right">
+					<button class="btn btn-success btn-fw" type="submit" id="Search" name="excel" style="margin-right: 2rem;">Exxport to Excel</button>
 				</div>
 				</div>
 				</div>
@@ -89,7 +87,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${list}" var="s">
+						<c:forEach items="${balanceSheets}" var="s">
 							<tr>
 								<td>${s.user.name}</td>
 								<td>${s.user.contact}</td>

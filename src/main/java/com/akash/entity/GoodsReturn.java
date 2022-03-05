@@ -70,9 +70,6 @@ public class GoodsReturn {
 	@JoinColumn(name = "Goods_Return")
 	List<Sales> sales;
 
-	
-	
-
 	@Column(name = "carriage")
 	private Double carraige;
 
@@ -195,9 +192,6 @@ public class GoodsReturn {
 	public void setSales(List<Sales> sales) {
 		this.sales = sales;
 	}
-
-	
-	
 
 	public Double getCarraige() {
 		return carraige;

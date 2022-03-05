@@ -2,6 +2,15 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+.select2-container .select2-selection--single{
+	height: 41px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	margin-top: -5px;
+}
+</style>
 <div class="col-md-12 grid-margin stretch-card">
 	<c:if test="${dayBook.transactionType eq 'Expenditure'}">
 		<c:set var="exp" value="active"/>
@@ -127,7 +136,7 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" id="person">Transferred
+									<label class="col-sm-4 col-form-label" id="person">Received
 										By</label>
 									<div class="col-sm-8">
 										<form:input type="text" class="form-control"
@@ -137,8 +146,8 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" id="accountNumberLbl">Transferred
-										From</label>
+									<label class="col-sm-4 col-form-label" id="accountNumberLbl">Received
+										Into</label>
 									<div class="col-sm-8">
 										<form:select class="form-control" path="accountNumber" required="required"
 											id="accountNumber">
@@ -146,6 +155,16 @@
 											<form:options items="${accounts}" itemLabel="accountNumber" 
 												itemValue="accountNumber" />
 										</form:select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group row">
+									<label class="col-sm-2 col-form-label">Description</label>
+									<div class="col-sm-10">
+										<form:textarea path="description" class="form-control"/>
 									</div>
 								</div>
 							</div>
@@ -173,6 +192,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="row">
 								<div class="col-md-12">
 								<div class="form-group row float-right" style="margin-bottom: 0rem;">
@@ -188,12 +208,12 @@
 	</div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slim.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/select2.min.js" defer></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		
 		var transactionType=$('#transactionType').val();
-		console.log(transactionType);
-		if(transactionType=='Revenue'){
+		if(transactionType=='Revenue' || !transactionType){
 			$("#accountNumberLbl").text('Received Into');
 			$("#person").text('Received By');
 			$('#transactionType').val('Revenue');
@@ -270,6 +290,8 @@
 		} */ 
 		
 	});
-
+	$(document).ready(function(){
+		$('#users').select2();
+	});
 	
 </script>

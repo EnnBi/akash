@@ -3,6 +3,7 @@ package com.akash.entity;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -187,7 +188,7 @@ public class BillBook {
 	}
 
 	public void setLoadingAmount(Double loadingAmount) {
-		this.loadingAmount = loadingAmount;
+		this.loadingAmount = Objects.nonNull(loadingAmount)?Double.valueOf(df.format(loadingAmount)):Double.valueOf(0);
 	}
 
 	public Double getUnloadingAmount() {
@@ -201,7 +202,7 @@ public class BillBook {
 	}
 
 	public void setUnloadingAmount(Double unloadingAmount) {
-		this.unloadingAmount = unloadingAmount;
+		this.unloadingAmount = Objects.nonNull(unloadingAmount)?Double.valueOf(df.format(unloadingAmount)):Double.valueOf(0);
 	}
 
 	public Double getTotal() {
@@ -209,7 +210,7 @@ public class BillBook {
 	}
 
 	public void setTotal(Double total) {
-		this.total = total;
+		this.total = Objects.nonNull(total)?Double.valueOf(df.format(total)):Double.valueOf(0);
 	}
 
 	public Double getPaid() {
@@ -217,7 +218,7 @@ public class BillBook {
 	}
 
 	public void setPaid(Double paid) {
-		this.paid = paid;
+		this.paid = Objects.nonNull(paid)?Double.valueOf(df.format(paid)):Double.valueOf(0);
 	}
 
 	public Double getBalance() {
@@ -225,7 +226,7 @@ public class BillBook {
 	}
 
 	public void setBalance(Double balance) {
-		this.balance = balance;
+		this.balance = Objects.nonNull(balance)?Double.valueOf(df.format(balance)):Double.valueOf(0);
 	}
 
 	public List<Sales> getSales() {
@@ -263,7 +264,7 @@ public class BillBook {
 	}
 
 	public void setCarraige(Double carraige) {
-		this.carraige = carraige;
+		this.carraige = Objects.nonNull(carraige)?Double.valueOf(df.format(carraige)):Double.valueOf(0);
 	}
 
 	public Double getLoadingAmountPerHead() {
@@ -271,7 +272,7 @@ public class BillBook {
 	}
 
 	public void setLoadingAmountPerHead(Double loadingAmountPerHead) {
-		this.loadingAmountPerHead = Double.valueOf(df.format(loadingAmountPerHead));
+		this.loadingAmountPerHead = Objects.nonNull(loadingAmountPerHead)?Double.valueOf(df.format(loadingAmountPerHead)):Double.valueOf(0);
 	}
 
 	public Double getUnloadingAmountPerHead() {
@@ -279,7 +280,7 @@ public class BillBook {
 	}
 
 	public void setUnloadingAmountPerHead(Double unloadingAmountPerHead) {
-		this.unloadingAmountPerHead = Double.valueOf(df.format(unloadingAmountPerHead));
+		this.unloadingAmountPerHead = Objects.nonNull(unloadingAmountPerHead)?Double.valueOf(df.format(unloadingAmountPerHead)):Double.valueOf(0);
 	}
 
 	public String getSites() {
@@ -311,7 +312,7 @@ public class BillBook {
 	}
 
 	public void setDriverLoadingCharges(Double driverLoadingCharges) {
-		this.driverLoadingCharges = Double.valueOf(df.format(driverLoadingCharges));
+		this.driverLoadingCharges = Objects.nonNull(driverLoadingCharges)?Double.valueOf(df.format(driverLoadingCharges)):Double.valueOf(0);
 	}
 
 	public Double getDriverUnloadingCharges() {
@@ -319,7 +320,7 @@ public class BillBook {
 	}
 
 	public void setDriverUnloadingCharges(Double driverUnloadingCharges) {
-		this.driverUnloadingCharges = Double.valueOf(df.format(driverUnloadingCharges));
+		this.driverUnloadingCharges = Objects.nonNull(driverUnloadingCharges)?Double.valueOf(df.format(driverUnloadingCharges)):Double.valueOf(0);
 	}
 
 	public AppUser getDriver() {
@@ -335,7 +336,7 @@ public class BillBook {
 	}
 
 	public void setDiscount(Double discount) {
-		this.discount = discount;
+		this.discount = Objects.nonNull(discount)?Double.valueOf(df.format(discount)):Double.valueOf(0);
 	}
 	
 	public LabourGroup getUnloaderLabourGroup() {

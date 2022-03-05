@@ -2,6 +2,15 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+.select2-container .select2-selection--single{
+	height: 41px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	margin-top: -5px;
+}
+</style>
 <div class="col-md-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
@@ -32,7 +41,7 @@
 						<div class="form-group row">
 							<label class="col-sm-4 col-form-label">Name</label>
 							<div class="col-sm-8">
-								<form:select class="form-control" path="user" id="users">
+								<form:select class="form-control user" path="user" id="users">
 									<form:option value="">Select Person</form:option>
 									<form:options items="${customers}" itemLabel="name"
 										itemValue="id" />
@@ -245,6 +254,8 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery.slim.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/select2.min.js" defer></script>
+
 <script type="text/javascript">
 	$('#type').change(
 			function() {
@@ -259,4 +270,8 @@
 					});
 				});
 			})
+			
+	$(document).ready(function(){
+		$('#users').select2();
+	});
 </script>

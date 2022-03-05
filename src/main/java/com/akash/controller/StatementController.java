@@ -49,6 +49,7 @@ import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+@SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/statement")
 public class StatementController {

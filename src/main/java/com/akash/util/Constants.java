@@ -8,7 +8,7 @@ public interface Constants {
 	String CONTRACTOR="Contractor";
 	String LABOUR="Labour";
 	String OWNER="Owner";
-	int ROWS =10;
+	int ROWS =20;
 	String CHEQUE="Cheque";
 	String PENDING="Pending";
 	String SUCCESS="Success";

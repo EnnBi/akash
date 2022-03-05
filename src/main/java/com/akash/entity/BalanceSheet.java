@@ -1,7 +1,5 @@
 package com.akash.entity;
 
-import com.akash.projections.AppUserProjection;
-
 public class BalanceSheet {
 	
 	AppUser user;

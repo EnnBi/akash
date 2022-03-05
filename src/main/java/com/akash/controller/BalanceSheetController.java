@@ -1,9 +1,16 @@
 package com.akash.controller;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.akash.entity.AppUser;
 import com.akash.entity.BalanceSheet;
-import com.akash.projections.AppUserProjection;
 import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
 import com.akash.repository.ClearDuesRepository;
@@ -27,6 +33,16 @@ import com.akash.repository.RawMaterialRepository;
 import com.akash.repository.UserTypeRepository;
 import com.akash.util.CommonMethods;
 import com.akash.util.Constants;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 @Controller
 @RequestMapping("/balanceSheet")
@@ -42,6 +58,7 @@ public class BalanceSheetController {
 	DayBookRepository dayBookRepo;
 	@Autowired
 	ClearDuesRepository clearDuesRepo;
+	
 	@Autowired
 	GoodsReturnRepository goodsReturnRepository;
 	
@@ -50,50 +67,86 @@ public class BalanceSheetController {
 	
 	@Autowired
 	RawMaterialRepository rawMaterialRepo;
-	
+
 	@GetMapping
 	public String add(Model model, HttpSession session) {
-		
-			
-			model.addAttribute("userTypes", userTypeRepository.findAll());
-			
-		
+
+		model.addAttribute("userTypes", userTypeRepository.findAll());
+
 		return "balancesheet";
 
 	}
-	@PostMapping
+	@PostMapping(params="view")
 	public String getBalanceSheet(@RequestParam("userType") String usertype,Model model,HttpSession session) {
 	   session.setAttribute("userType", usertype);
 	   model.addAttribute("userTypes", userTypeRepository.findAll());
-			
+	   Map<String,Object> map = new HashMap<>();	
 		switch(usertype) {
 		case Constants.CUSTOMER:
-			getCustomerBalanceSheet( model);
+			map = getCustomerBalanceSheet();
 			break;
 		case Constants.CONTRACTOR:
-			getCustomerBalanceSheet(model);
+			map = getCustomerBalanceSheet();
 			break;
 		case Constants.DRIVER:
-			getDriverBalanceSheet(usertype, model);
+			map= getDriverBalanceSheet();
 			break;
 		case Constants.DEALER:
-			getDealerBalanceSheet(usertype, model);
+			map = getDealerBalanceSheet();
 			break;
 		case Constants.LABOUR:
-			getLabourBalanceSheet(usertype, model);
+			map = getLabourBalanceSheet();
 			break;
 		case Constants.OWNER:
-			getOwnerBalanceSheet(usertype, model);
+			map =getOwnerBalanceSheet();
 			break;
 		default:
 			break;	
 		
 		}
 		
+		model.addAttribute("totalCredit",map.get("totalCredit"));
+		model.addAttribute("totalDebit",map.get("totalDebit"));
+		model.addAttribute("totalBalance",map.get("totalBalance"));
+		model.addAttribute("balanceSheets",map.get("balanceSheets"));
+		
 		return "balancesheet";
 		
 	}
-	public void getCustomerBalanceSheet(Model model) {
+	
+	@PostMapping(params = "excel")
+	public void exportToExcelBalanceSheet(@RequestParam("userType") String usertype, Model model,HttpServletResponse response,HttpSession session) {
+		session.setAttribute("userType", usertype);
+		   model.addAttribute("userTypes", userTypeRepository.findAll());
+		   Map<String,Object> map = new HashMap<>();		
+			switch(usertype) {
+			case Constants.CUSTOMER:
+				 map = getCustomerBalanceSheet();
+				break;
+			case Constants.CONTRACTOR:
+				 map = getCustomerBalanceSheet();
+				break;
+			case Constants.DRIVER:
+				 map = getDriverBalanceSheet();
+				break;
+			case Constants.DEALER:
+				 map = getDealerBalanceSheet();
+				break;
+			case Constants.LABOUR:
+				 map = getLabourBalanceSheet();
+				break;
+			case Constants.OWNER:
+				 map = getOwnerBalanceSheet();
+				break;
+			default:
+				break;	
+			
+			}
+		generateStatementExcel(map,response,usertype);
+	}
+
+	public Map<String, Object> getCustomerBalanceSheet() {
+		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.CUSTOMER, Constants.CONTRACTOR };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
 		Double totalBalance=0.0;
@@ -117,15 +170,19 @@ public class BalanceSheetController {
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		model.addAttribute("totalcredit",totalCredit);
-		model.addAttribute("totaldebit",totalDebit);
-		model.addAttribute("totalbalance",totalBalance);
-		model.addAttribute("list",balanceSheets);
+		map.put("totalCredit",totalCredit);
+		map.put("totalDebit",totalDebit);
+		map.put("totalBalance",totalBalance);
+		map.put("balanceSheets",balanceSheets);
+		
+		return map;
 		
 	}
 	
-	public void getDriverBalanceSheet(String usertype,Model model) {
-		String[] usertypes= { usertype };
+	public Map<String, Object> getDriverBalanceSheet() {
+		Map<String, Object> map = new HashMap<>();
+		String[] usertypes= { Constants.DRIVER };
+		
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
 		Double totalBalance=0.0;
 		Double totalCredit=0.0;
@@ -148,14 +205,17 @@ public class BalanceSheetController {
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		model.addAttribute("totalcredit",totalCredit);
-		model.addAttribute("totaldebit",totalDebit);
-		model.addAttribute("totalbalance",totalBalance);
-		model.addAttribute("list",balanceSheets);
+		map.put("totalCredit",totalCredit);
+		map.put("totalDebit",totalDebit);
+		map.put("totalBalance",totalBalance);
+		map.put("balanceSheets",balanceSheets);
+		
+		return map;
 		
 	}
-	public void getOwnerBalanceSheet(String usertype,Model model) {
-		String[] usertypes= { usertype };
+	public Map<String, Object> getOwnerBalanceSheet() {
+		Map<String, Object> map = new HashMap<>();
+		String[] usertypes= { Constants.OWNER };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
 		Double totalBalance=0.0;
 		Double totalCredit=0.0;
@@ -178,15 +238,18 @@ public class BalanceSheetController {
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		model.addAttribute("totalcredit",totalCredit);
-		model.addAttribute("totaldebit",totalDebit);
-		model.addAttribute("totalbalance",totalBalance);
-		model.addAttribute("list",balanceSheets);
+		map.put("totalCredit",totalCredit);
+		map.put("totalDebit",totalDebit);
+		map.put("totalBalance",totalBalance);
+		map.put("balanceSheets",balanceSheets);
+		
+		return map;
 		
 	}
 	
-	public void getLabourBalanceSheet(String usertype,Model model) {
-		String[] usertypes= { usertype };
+	public Map<String, Object> getLabourBalanceSheet() {
+		Map<String, Object> map = new HashMap<>();
+		String[] usertypes= { Constants.LABOUR };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
 		Double totalBalance=0.0;
 		Double totalCredit=0.0;
@@ -209,15 +272,18 @@ public class BalanceSheetController {
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		model.addAttribute("totalcredit",totalCredit);
-		model.addAttribute("totaldebit",totalDebit);
-		model.addAttribute("totalbalance",totalBalance);
-		model.addAttribute("list",balanceSheets);
+		map.put("totalCredit",totalCredit);
+		map.put("totalDebit",totalDebit);
+		map.put("totalBalance",totalBalance);
+		map.put("balanceSheets",balanceSheets);
+		
+		return map;
 		
 	}
 	
-	public void getDealerBalanceSheet(String usertype,Model model) {
-		String[] usertypes= { usertype };
+	public Map<String, Object> getDealerBalanceSheet() {
+		Map<String, Object> map = new HashMap<>();
+		String[] usertypes= { Constants.DEALER };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
 		Double totalBalance=0.0;
 		Double totalCredit=0.0;
@@ -237,14 +303,48 @@ public class BalanceSheetController {
 		     balanceSheet.setBalance(balance);
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);
-		}
+		} 
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		model.addAttribute("totalcredit",totalCredit);
-		model.addAttribute("totaldebit",totalDebit);
-		model.addAttribute("totalbalance",totalBalance);
-		model.addAttribute("list",balanceSheets);
+		map.put("totalCredit",totalCredit);
+		map.put("totalDebit",totalDebit);
+		map.put("totalBalance",totalBalance);
+		map.put("balanceSheets",balanceSheets);
 		
+		return map;
+	}
+
+	public void generateStatementExcel(Map<String,Object> map,HttpServletResponse response,String usertype){
+		InputStream mainJasperStream = this.getClass().getResourceAsStream("/BalanceSheet.jasper");
+		
+		try {
+			JasperReport mainReport =  (JasperReport) JRLoader.loadObject(mainJasperStream);
+			
+			Map<String,Object> params =  new HashMap<>();
+			params.put("totalBalance", map.get("totalBalance"));
+			params.put("totalCredit",map.get("totalCredit"));
+			params.put("totalDebit",map.get("totalDebit"));
+			params.put("type",usertype);
+			JRDataSource data = new JRBeanCollectionDataSource((Collection<BalanceSheet>) map.get("balanceSheets"));
+			JasperPrint jasperPrint  = JasperFillManager.fillReport(mainReport, params, data);
+			response.setContentType("application/vnd.ms-excel");
+			String fileName = usertype+" "+LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+			response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xls");
+			OutputStream  output = response.getOutputStream();
+
+			JRXlsxExporter exporter = new JRXlsxExporter();
+			exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+
+			exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, output);
+
+			exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
+					Boolean.TRUE);
+			exporter.setParameter(JRXlsAbstractExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+			exporter.exportReport();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

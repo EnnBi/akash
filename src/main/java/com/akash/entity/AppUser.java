@@ -35,11 +35,9 @@ public class AppUser {
 	@Column(name="contact")
 	private String contact;
 	
-	@Pattern(regexp = "^\\d{10}$", message = "Please Enter the 10 digits correctly")
 	@Column(name="contact_2")
 	private String contactTwo;
 	
-	@Pattern(regexp = "^\\d{10}$", message = "Please Enter the 10 digits correctly")
 	@Column(name="contact_3")
 	private String contactThree;
 	

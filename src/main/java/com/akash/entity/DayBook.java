@@ -50,7 +50,17 @@ public class DayBook {
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="description")
+	private String description;
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public long getId() {
 		return id;
 	}

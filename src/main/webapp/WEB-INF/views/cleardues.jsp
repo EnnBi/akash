@@ -2,8 +2,12 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<head>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.slim.min.js"></script>
+</head>
+<body>
 <div class="col-md-12 grid-margin stretch-card">
-	
+
 	<div class="card">
 		<div class="card-body">
 			<h4 class="card-title">ClearDues</h4>
@@ -46,7 +50,7 @@
 								<div class="form-group row">
 									<label class="col-sm-4 col-form-label">Name</label>
 									<div class="col-sm-8">
-										<form:select class="form-control" path="user" id="person" required="required">
+										<form:select class="form-control" path="user" id="users" required="required">
 											<form:option value="">Select Person</form:option>
 											<form:options items="${customers}" itemLabel="name"
 												itemValue="id" />
@@ -183,39 +187,39 @@
 							
 						
 
+	</body>					
 						
-						
-<script src="${pageContext.request.contextPath}/resources/js/jquery.slim.min.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function(){
 		
 		
 	
-	$('#type').change(
-			function() {
+	$('#type').change(function() {
 				var name = $(this).val();
 				var url = "${pageContext.request.contextPath}/user-type/" + name + "/users";
 				$.get(url, function(data) {
-					$('#person').find('option').not(':first').remove();
+					$('#users').find('option').not(':first').remove();
 					$.each(data, function(key, value) {
-						$('#person').append(
+						console.log(value.name);
+						$('#users').append(                                                                           	
 								$("<option></option>").attr("value", value.id)
 										.text(value.name));
 					});
 				});
-			});
+			})
 	});
+	
 			
-	$('#person').change(function() {
-		
+	 $('#users').change(function() {
 	    var id = $(this).val();
 		console.log(id);
 		var urlBalance = "${pageContext.request.contextPath}/bill-book/customer/"+id;
 		$.get(urlBalance,function(data){
 			$("#prevBalance").val(data);
 		});
-	});
+	}); 
 	
-
+	
 	
 </script>

@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Transient;
 
+import com.akash.util.CommonMethods;
+
 public class DriverStatement{
 
 
@@ -129,9 +131,7 @@ public class DriverStatement{
 	}
 
 	public Double getDebit() {
-		if (debit != null)
-			return Double.valueOf(df.format(debit));
-		return debit;
+		return CommonMethods.format(debit);
 	}
 
 	public void setDebit(Double debit) {
@@ -139,7 +139,7 @@ public class DriverStatement{
 	}
 
 	public Double getCredit() {
-		return credit;
+		return CommonMethods.format(credit);
 	}
 
 	public void setCredit(Double credit) {
@@ -147,7 +147,7 @@ public class DriverStatement{
 	}
 
 	public Double getBalance() {
-		return balance;
+		return CommonMethods.format(balance);
 	}
 
 	public void setBalance(Double balance) {
@@ -179,5 +179,14 @@ public class DriverStatement{
 		this.unloading = this.unloading == null ? 0 : this.unloading;
 		this.debit = this.carraige + this.loading + this.unloading;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "DriverStatement [date=" + date + "]";
+	}
+	
+	
 
 }

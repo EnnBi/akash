@@ -29,7 +29,7 @@ public interface BillBookRepository extends CrudRepository<BillBook,Long>,BillBo
 	@Query("Select Sum(b.driverUnloadingCharges) from BillBook b where :driver MEMBER OF b.unloaders and b.date between :startDate and :endDate")
 	Double sumOfDriverUnloading(@Param("driver") AppUser driver,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	
-	@Query("Select new com.akash.entity.DriverStatement(b.date,b.receiptNumber,b.customer.name,b.sites,b.carraige,b.driverLoadingCharges,b.driverUnloadingCharges,'"+Constants.BILLBOOK+"')  from BillBook b where (:driver MEMBER OF b.loaders OR :driver MEMBER OF b.unloaders OR b.driver = :driver ) AND (b.date between :startDate and :endDate)")
+	@Query("Select new com.akash.entity.DriverStatement(b.date,b.receiptNumber,b.customer.name,b.sites,b.carraige,b.driverLoadingCharges,b.driverUnloadingCharges,'"+Constants.BILLBOOK+"')  from BillBook b where (:driver MEMBER OF b.loaders OR :driver MEMBER OF b.unloaders OR b.driver = :driver ) AND (b.date between :startDate and :endDate) ORDER BY b.date ASC")
 	List<DriverStatement> findDriverDebits(@Param("driver") AppUser driver,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 	
 	@Query("Select Sum(b.loadingAmountPerHead) from BillBook b where :labour MEMBER OF b.loaders and b.date between :startDate and :endDate")

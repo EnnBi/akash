@@ -92,7 +92,7 @@
 									<label class="col-sm-4 col-form-label">Current Balance
 										</label>
 									<div class="col-sm-8">
-										<input type="text" id="prevBalance" disabled="disabled" value="${balance}" />
+										<input type="text" class="form-control" id="prevBalance" disabled="disabled" value="${balance}" />
 									</div>
 								</div>
 							</div>

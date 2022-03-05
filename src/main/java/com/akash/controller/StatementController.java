@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,9 @@ public class StatementController {
 
 	@RequestMapping(method = RequestMethod.POST,params="view")
 	public String statementShow(StatementSearch statementSearch, Model model) {
-		System.out.println("I'm here");
+		this.prevBalance=0.0;
+		this.totalCredit=0.0;
+		this.totalDebit=0.0;
 		switch (statementSearch.getUserType()) {
 		case Constants.DRIVER:
 			model.addAttribute("statements", generateDriverStatement(statementSearch,model));
@@ -123,9 +126,9 @@ public class StatementController {
 		model.addAttribute("date",LocalDate.now());
 		model.addAttribute("user", appUserRepo.findById(statementSearch.getUser()).orElse(null));
 		model.addAttribute("statementSearch", statementSearch);
-		model.addAttribute("previousBalance", prevBalance);
-		model.addAttribute("totalCredit", totalCredit);
-		model.addAttribute("totalDebit", totalDebit);
+		model.addAttribute("previousBalance", CommonMethods.format(prevBalance));
+		model.addAttribute("totalCredit", CommonMethods.format(totalCredit));
+		model.addAttribute("totalDebit", CommonMethods.format(totalDebit));
 		model.addAttribute("prevDate", statementSearch.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 		return "statement";
 	}
@@ -133,6 +136,9 @@ public class StatementController {
 	@RequestMapping(method = RequestMethod.POST,params="excel")
 	public void statementPrintExcel(StatementSearch statementSearch, Model model,HttpServletResponse response) {
 		AppUser user = appUserRepo.findById(statementSearch.getUser()).orElse(null);
+		this.prevBalance=0.0;
+		this.totalCredit=0.0;
+		this.totalDebit=0.0;
 		this.prevDate=statementSearch.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
 		switch (statementSearch.getUserType()) {
@@ -191,8 +197,7 @@ public class StatementController {
 		statements.addAll(dayBookCreditEntries);
 		statements.addAll(dayBookDebitEntries);
 
-		Collections.sort(statements, (a, b) -> a.getDate().compareTo(b.getDate()));
-
+		statements.sort(Comparator.comparing(DriverStatement::getDate));
 		for (DriverStatement s : statements) {
 			if (Constants.BILLBOOK.equals(s.getType())) {
 				s.setBalance(balance + s.getDebit());

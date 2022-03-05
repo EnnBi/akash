@@ -105,10 +105,11 @@ public class BalanceSheetController {
 		
 		}
 		
-		model.addAttribute("totalCredit",map.get("totalCredit"));
-		model.addAttribute("totalDebit",map.get("totalDebit"));
-		model.addAttribute("totalBalance",map.get("totalBalance"));
+		model.addAttribute("totalCredit",CommonMethods.format(map.get("totalCredit")));
+		model.addAttribute("totalDebit",CommonMethods.format(map.get("totalDebit")));
+		model.addAttribute("totalBalance",CommonMethods.format(map.get("totalBalance")));
 		model.addAttribute("balanceSheets",map.get("balanceSheets"));
+				
 		
 		return "balancesheet";
 		
@@ -198,7 +199,7 @@ public class BalanceSheetController {
 			Double debit=CommonMethods.getDriverDebit(appUser.getId(),LocalDate.MIN,LocalDate.now(), dayBookRepo,billBookRepository,appUserRepo );
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
-		     Double balance=credit-debit;
+		     Double balance=debit-credit;
 		     balanceSheet.setBalance(balance);
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);
@@ -231,16 +232,16 @@ public class BalanceSheetController {
 			Double debit=CommonMethods.getOwnerDebit(appUser.getId(),LocalDate.MIN,LocalDate.now(), dayBookRepo,appUserRepo );
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
-		     Double balance=credit-debit;
+		     Double balance=debit-credit;
 		     balanceSheet.setBalance(balance);
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
-		map.put("totalCredit",totalCredit);
-		map.put("totalDebit",totalDebit);
-		map.put("totalBalance",totalBalance);
+		map.put("totalCredit",CommonMethods.format(totalCredit));
+		map.put("totalDebit",CommonMethods.format(totalDebit));
+		map.put("totalBalance",CommonMethods.format(totalBalance) );
 		map.put("balanceSheets",balanceSheets);
 		
 		return map;
@@ -265,12 +266,11 @@ public class BalanceSheetController {
 			Double debit=CommonMethods.getLabourDebit(appUser.getId(),LocalDate.MIN, LocalDate.now(), dayBookRepo, appUserRepo, billBookRepository, manufactureRepository);
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
-		     Double balance=credit-debit;
+		     Double balance=debit-credit;
 		     balanceSheet.setBalance(balance);
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);
 		}
-		System.out.println("balancesheetSizeee" + balanceSheets.size());
 		
 		map.put("totalCredit",totalCredit);
 		map.put("totalDebit",totalDebit);
@@ -299,7 +299,7 @@ public class BalanceSheetController {
 			Double debit=CommonMethods.getDealerDebit(appUser.getId(), LocalDate.MIN, LocalDate.now(), dayBookRepo, rawMaterialRepo);
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
-		     Double balance=credit-debit;
+		     Double balance=debit-credit;
 		     balanceSheet.setBalance(balance);
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);

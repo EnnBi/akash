@@ -30,6 +30,8 @@
 						href="${pageContext.request.contextPath}/bill-book">Create</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/bill-book/search">Search</a></li>
+					<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/return-goods/search">Goods Return</a></li>
 				</ul>
 			</div></li>
 		<li class="nav-item d-none d-lg-block"><a class="nav-link"
@@ -47,11 +49,11 @@
 				</ul>
 			</div></li>
 		<li class="nav-item"><a class="nav-link" data-toggle="collapse"
-			href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+			href="#day-book" aria-expanded="false" aria-controls="ui-basic">
 				<i class="icon-target menu-icon"></i> <span class="menu-title">DayBook</span>
 				<span class="badge badge-success">2</span>
 		</a>
-			<div class="collapse" id="ui-basic">
+			<div class="collapse" id="day-book">
 				<ul class="nav flex-column sub-menu">
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/day-book">Create</a></li>
@@ -60,11 +62,11 @@
 				</ul>
 			</div></li>
 		<li class="nav-item"><a class="nav-link" data-toggle="collapse"
-			href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
+			href="#person" aria-expanded="false" aria-controls="ui-advanced">
 				<i class="icon-cup menu-icon"></i> <span class="menu-title">Person
 					</span> <span class="badge badge-primary">2</span>
 		</a>
-			<div class="collapse" id="ui-advanced">
+			<div class="collapse" id="person">
 				<ul class="nav flex-column sub-menu">
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/user">Create</a></li>
@@ -73,12 +75,12 @@
 				</ul>
 			</div></li>
 		<li class="nav-item"><a class="nav-link" data-toggle="collapse"
-			href="#form-elements" aria-expanded="false"
+			href="#raw-material" aria-expanded="false"
 			aria-controls="form-elements"> <i class="icon-flag menu-icon"></i>
 				<span class="menu-title">Raw Material</span> <span
 				class="badge badge-danger">2</span>
 		</a>
-			<div class="collapse" id="form-elements">
+			<div class="collapse" id="raw-material">
 				<ul class="nav flex-column sub-menu">
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/raw-material">Create</a></li>
@@ -89,9 +91,24 @@
 			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/inventory"> <i
 				class="icon-rocket menu-icon"></i> <span class="menu-title">Inventory</span>
 		</a></li>
-		<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/statement"> <i
-				class="icon-rocket menu-icon"></i> <span class="menu-title">Statement</span>
-		</a></li>
+
+		<li class="nav-item"><a class="nav-link" data-toggle="collapse"
+			href="#statement" aria-expanded="false"
+			aria-controls="form-elements"> <i class="icon-rocket menu-icon"></i>
+				<span class="menu-title">Statement</span> <span
+				class="badge badge-danger">3</span>
+		</a>
+			<div class="collapse" id="statement">
+				<ul class="nav flex-column sub-menu">
+					<li class="nav-item"><a class="nav-link"
+						href="${pageContext.request.contextPath}/statement">General</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${pageContext.request.contextPath}/balanceSheet">Balance Sheet</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${pageContext.request.contextPath}/clearDues">Clear Dues</a></li>	
+				</ul>
+			</div></li>
+		
 			
 			<li class="nav-item"><a class="nav-link" data-toggle="collapse"
 			href="#settings" aria-expanded="false"

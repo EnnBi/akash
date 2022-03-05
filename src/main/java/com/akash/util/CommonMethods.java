@@ -177,5 +177,10 @@ public class CommonMethods {
 		return debit;
 		
 	}
+	
+	public static Double format(Object number) {
+		System.err.println(number);
+		return Objects.isNull(number)?Double.valueOf(0):Double.valueOf(df.format(number));
+	}
 
 }

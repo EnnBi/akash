@@ -367,6 +367,7 @@ public class StatementController {
 			if(Constants.BILLBOOK.equals(s.getType())){
 				s.setBalance(balance+s.getCredit());
 				balance=balance+s.getCredit();
+				this.totalCredit=this.totalCredit+s.getCredit();
 			}else if(Constants.DUES.equals(s.getType())) {
 				s.setBalance(balance-s.getDebit());
 				balance=balance-s.getDebit();

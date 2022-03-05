@@ -20,18 +20,26 @@
 <div class="col-lg-12 grid-margin">
 	<div class="card">
 		<div class="card-body">
-			<form action="${pageContext.request.contextPath}/balanceSheet" method="post">
+			<form action="${pageContext.request.contextPath}/balanceSheet" method="post" >
+			
 				
-
 				<div class="row">
 				<div class="col-md-12">
 						<div class="form-group row">
 							<label class="col-sm-3 col-form-label">Person Type</label>
 							
+							
 								<select name="userType" class="form-control"  required="required">
 									<option value="">Select Any Person Type</option>
                                      <c:forEach items="${userTypes}" var="user">
+                                     <c:choose>
+                                     <c:when test="${user.name == users}">
+                                     <option value="${user.name}" selected="selected">${user.name}</option>
+                                     </c:when>
+                                     <c:otherwise>
 									<option value="${user.name}">${user.name}</option>
+									</c:otherwise>
+									</c:choose>
 									</c:forEach>
 								</select>
 						</div>

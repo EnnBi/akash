@@ -70,6 +70,7 @@ public class BalanceSheetController {
 
 	@GetMapping
 	public String add(Model model, HttpSession session) {
+		
 
 		model.addAttribute("userTypes", userTypeRepository.findAll());
 
@@ -78,7 +79,7 @@ public class BalanceSheetController {
 	}
 	@PostMapping(params="view")
 	public String getBalanceSheet(@RequestParam("userType") String usertype,Model model,HttpSession session) {
-	   session.setAttribute("userType", usertype);
+	model.addAttribute("users", usertype);
 	   model.addAttribute("userTypes", userTypeRepository.findAll());
 	   Map<String,Object> map = new HashMap<>();	
 		switch(usertype) {

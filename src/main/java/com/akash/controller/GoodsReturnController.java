@@ -103,14 +103,14 @@ public class GoodsReturnController {
 		return "redirect:/return-goods/search";
 	}
 	
-	@GetMapping("/Editsearch")
+	@GetMapping("/edit")
 	public String returnEditSearchGet(Model model) {
 		model.addAttribute("ReturnSearch", new GoodsReturnSearch());
 		fillModel(model);
 		return "goodsreturneditsearch";
 	}
 	
-	@PostMapping("/Editsearch")
+	@PostMapping("/edit")
 	public String searchPostEdit(GoodsReturnSearch goodsRetunSearch, Model model, HttpSession session) {
 		session.setAttribute("ReturnSearch", goodsRetunSearch);
 		int page = 1;
@@ -141,7 +141,7 @@ public class GoodsReturnController {
 		 });
 		goodsReturnRepo.save(goodsReturn);
 		redirectAttributes.addFlashAttribute("success", "Goods Returned updated successfully");
-		return "redirect:/return-goods/Editsearch";
+		return "redirect:/return-goods/edit";
 	}
 	public void pagination(int page, BillBookSearch billBookSearch, Model model) {
 
@@ -177,13 +177,13 @@ public class GoodsReturnController {
 	}
 	
 	
-	@GetMapping("/pageno={page}")
+	@GetMapping("/add/page={page}")
 	public String page(@PathVariable("page") int page, HttpSession session, Model model) {
 		BillBookSearch billBookSearch = (BillBookSearch) session.getAttribute("goodsReturnSearch");
 		pagination(page, billBookSearch, model);
 		return "goodsreturnsearch";
 	}
-	@GetMapping("/pageNo={page}")
+	@GetMapping("/edit/page={page}")
 	public String Editpage(@PathVariable("page") int page, HttpSession session, Model model) {
 		GoodsReturnSearch goodsRetunSearch = (GoodsReturnSearch) session.getAttribute("ReturnSearch");
 		editPagination(page, goodsRetunSearch, model);

@@ -21,7 +21,7 @@
 			<c:if test="${not empty fail}">
 				<div class="alert alert-danger" role="alert">${fail}</div>
 			</c:if>
-			<form:form action="${pageContext.request.contextPath}/return-goods/Editsearch" class="form-sample"
+			<form:form action="${pageContext.request.contextPath}/return-goods/edit" class="form-sample"
 				modelAttribute="ReturnSearch" method="post">
 				<div class="row">
 					<div class="col-md-6">
@@ -118,7 +118,7 @@
 				class="pagination rounded-flat pagination-success d-flex justify-content-center">
 				<c:if test="${currentPage !=1}">
 					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/return-goods/pageNo=${currentPage - 1}"><i
+						href="${pageContext.request.contextPath}/return-goods/edit/page=${currentPage - 1}"><i
 							class="mdi mdi-chevron-left"></i></a></li>
 				</c:if>
 				<c:forEach var="i" begin="1" end="${totalPages}">
@@ -128,13 +128,13 @@
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="<c:url value="/return-goods/pageNo=${i}"/>">${i}</a></li>
+								href="<c:url value="/return-goods/edit/page=${i}"/>">${i}</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 				<c:if test="${currentPage!= totalPages}">
 					<li class="page-item"><a class="page-link"
-						href="${pageContext.request.contextPath}/return-goods/pageNo=${currentPage + 1}"><i
+						href="${pageContext.request.contextPath}/return-goods/edit/page=${currentPage + 1}"><i
 							class="mdi mdi-chevron-right"></i></a></li>
 				</c:if>
 			</ul>

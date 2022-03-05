@@ -491,7 +491,7 @@ line-height: 10px
 									.text(value.name));
 				});
 			});
-			alert("i'm in")
+			
 			var urlBalance = "${pageContext.request.contextPath}/bill-book/customer/"+id;
 			$.get(urlBalance,function(data){
 				$("#prevBalance").val(data);
@@ -618,13 +618,17 @@ line-height: 10px
 							var url="${pageContext.request.contextPath}/user/customer?"+values;
 							$.get(url, function(data) {
 								alert('Customer saved successfully')
+								
 								if (data) {
+								
 									$('#customer').append($("<option></option>")
 						                    .attr("value", data.id)
 						                    .attr("contact",data.contact)
 						                    .attr("address",data.address)
 						                    .text(data.name)); 
 								}
+							}).fail(function() {
+							    alert('Customer Already Exists'); // or whatever
 							});
 						});
 						

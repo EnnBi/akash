@@ -157,6 +157,10 @@ public class AppUserController {
 										  @RequestParam("contact") String contact,
 										  @RequestParam("address") String address,
 										  @RequestParam("ledgerNumber") String ledgerNumber){
+		if(appUserRepository.existsByContact(contact)) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		AppUser appUser=new AppUser();
 		appUser.setName(name);
 		appUser.setContact(contact);
@@ -166,6 +170,7 @@ public class AppUserController {
 		appUser.setActive(true);
 		appUser=appUserRepository.save(appUser);
 		return ResponseEntity.ok(appUser);
+		
 	}
 	
 	

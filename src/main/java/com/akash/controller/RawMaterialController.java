@@ -40,7 +40,7 @@ public class RawMaterialController {
 
 	int from = 0;
 	int total = 0;
-	int ROWS = 10;
+	int ROWS = 2;
 	Long records = 0L;
 
 	@GetMapping

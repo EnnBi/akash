@@ -2,6 +2,7 @@ package com.akash.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,10 +67,11 @@ public class DayBookController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable("id") long id,RedirectAttributes  redirectAttributes) {
+	public String delete(@PathVariable("id") long id,RedirectAttributes  redirectAttributes,HttpSession session) {
+		int page=(int) session.getAttribute("page");
 		daybookRepository.deleteById(id);
 		redirectAttributes.addFlashAttribute("success","Entry deleted successfully");
-		return "redirect:/day-book/search";
+		return "redirect:/day-book/pageno=" +page;
 	}
 
 	@GetMapping("/search")
@@ -84,18 +86,18 @@ public class DayBookController {
 		session.setAttribute("dayBookSearch",dayBookSearch);
 		int page=1;
 		fillModel(model);
-		pagination(page, dayBookSearch, model);
+		pagination(page, dayBookSearch, model,session);
 		return "daybookSearch";
 	}
 	
 	@GetMapping("/pageno={page}")
 	public String page(@PathVariable("page") int page,HttpSession session,Model model){
 		DayBookSearch dayBookSearch = (DayBookSearch) session.getAttribute("dayBookSearch");
-		pagination(page, dayBookSearch, model);
+		pagination(page, dayBookSearch, model,session);
 		return "daybookSearch";
 	}
 	
-	public void pagination(int page, DayBookSearch dayBookSearch, Model model) {
+	public void pagination(int page, DayBookSearch dayBookSearch, Model model,HttpSession session) {
 		page = (page > 0) ? page : 1;
 		from = Constants.ROWS * (page - 1);
 		records = (long) daybookRepository.count(dayBookSearch);
@@ -103,6 +105,7 @@ public class DayBookController {
 		List<DayBook> dayBooks = daybookRepository.searchPaginated(dayBookSearch,from);
 		model.addAttribute("totalPages", total);
 		model.addAttribute("currentPage", page);
+		session.setAttribute("page", page);
 		model.addAttribute("dayBooks", dayBooks);
 		model.addAttribute("dayBookSearch", dayBookSearch);
 		fillModel(model);

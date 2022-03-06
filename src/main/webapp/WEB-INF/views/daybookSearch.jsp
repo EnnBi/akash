@@ -14,6 +14,7 @@
 <div class="col-md-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
+		 
 			<h4 class="card-title">Day Book</h4>
 			<c:if test="${not empty success}">
 				<div class="alert alert-success" role="alert">${success}</div>
@@ -23,7 +24,7 @@
 			</c:if>
 			<form:form action="${pageContext.request.contextPath}/day-book/search" method="post"
 				modelAttribute="dayBookSearch" id="form">
-
+                 
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group row">

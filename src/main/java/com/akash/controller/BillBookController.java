@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -154,10 +155,11 @@ public class BillBookController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String delete(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+	public String delete(@PathVariable("id") long id, RedirectAttributes redirectAttributes,HttpSession session) {
+		int page=(int) session.getAttribute("page");
 		billBookRepository.deleteById(id);
 		redirectAttributes.addFlashAttribute("success", "Bill Book deleted successfully");
-		return "redirect:/bill-book/search";
+		return "redirect:/bill-book/pageno="+page;
 	}
 
 	@GetMapping("/search")
@@ -177,14 +179,14 @@ public class BillBookController {
 	public String searchPost(BillBookSearch billBookSearch, Model model, HttpSession session) {
 		session.setAttribute("billBookSearch", billBookSearch);
 		int page = 1;
-		pagination(page, billBookSearch, model);
+		pagination(page, billBookSearch, model,session);
 		return "billBookSearch";
 	}
 
 	@GetMapping("/pageno={page}")
 	public String page(@PathVariable("page") int page, HttpSession session, Model model) {
 		BillBookSearch billBookSearch = (BillBookSearch) session.getAttribute("billBookSearch");
-		pagination(page, billBookSearch, model);
+		pagination(page, billBookSearch, model,session);
 		return "billBookSearch";
 	}
 
@@ -199,7 +201,7 @@ public class BillBookController {
 		printBillBook(billBook, response);
 	}
 
-	public void pagination(int page, BillBookSearch billBookSearch, Model model) {
+	public void pagination(int page, BillBookSearch billBookSearch, Model model,HttpSession session) {
 
 		page = (page > 0) ? page : 1;
 		from = Constants.ROWS * (page - 1);
@@ -208,6 +210,7 @@ public class BillBookController {
 		List<BillBookDTO> billBooks = billBookRepository.searchPaginated(billBookSearch, from);
 		model.addAttribute("totalPages", total);
 		model.addAttribute("currentPage", page);
+		session.setAttribute("page",page);
 		model.addAttribute("billBooks", billBooks);
 		model.addAttribute("billBookSearch", billBookSearch);
 		System.out.println("total records: " + records + " total Pages: " + total + " Current page: " + page);

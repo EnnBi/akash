@@ -31,7 +31,9 @@
 					<li class="nav-item"><a class="nav-link"
 						href="${pageContext.request.contextPath}/bill-book/search">Search</a></li>
 					<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/return-goods/search">Goods Return</a></li>
+					href="${pageContext.request.contextPath}/return-goods/search">Add Goods Return</a></li>
+					<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}/return-goods/edit">Edit Goods Return</a></li>
 				</ul>
 			</div></li>
 		<li class="nav-item d-none d-lg-block"><a class="nav-link"

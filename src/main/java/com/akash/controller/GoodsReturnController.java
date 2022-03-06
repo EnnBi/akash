@@ -20,6 +20,7 @@ import com.akash.entity.BillBook;
 import com.akash.entity.BillBookSearch;
 import com.akash.entity.GoodsReturn;
 import com.akash.entity.GoodsReturnSearch;
+import com.akash.entity.Sales;
 import com.akash.entity.dto.BillBookDTO;
 import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
@@ -78,7 +79,9 @@ public class GoodsReturnController {
 	public String update(@PathVariable("id") long id, Model model) {
 
 		BillBook billBook = billBookRepository.findById(id).orElse(null);
-		
+		for(Sales s:billBook.getSales()) {
+			s.setQuantity(null);
+		}
 		GoodsReturn goodsReturn= goodsReturnRepo.billBookToGoodsReturnMapping(billBook);
 		model.addAttribute("goodsReturn", goodsReturn);
 		String[] userTypes = { Constants.CUSTOMER, Constants.CONTRACTOR };

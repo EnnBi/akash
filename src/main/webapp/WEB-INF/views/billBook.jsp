@@ -348,32 +348,7 @@ line-height: 10px
 								</div>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-12 ">
-								<div class="form-group row">
-									<div class="col-sm-6 col-form-label">
-										<label class="float-right">Balance:</label>
-									</div>
-									<div class="col-sm-4">
-										<form:input type="text" class="form-control" path="balance"
-											readonly="true" />
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12 ">
-								<div class="form-group row">
-									<div class="col-sm-6 col-form-label">
-										<label class="float-right">Balance:</label>
-									</div>
-									<div class="col-sm-4">
-										<form:input type="text" class="form-control" path="balance"
-											readonly="true" />
-									</div>
-								</div>
-							</div>
-						</div>
+						
 						<div class="form-group row float-right">
 							<input type="submit" class="btn btn-success btn-fw"
 								value="Submit" name="save">

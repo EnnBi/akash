@@ -239,10 +239,10 @@ public class BillBookController {
 				Double loadingAmtPerHead = loadingAmount / billBook.getLoaders().size();
 				billBook.setLoadingAmountPerHead(loadingAmtPerHead);
 			} else {
-				Double driverLoadingCharge = loadingAmount / 2;
-				billBook.setDriverLoadingCharges(driverLoadingCharge);
-				Double loadingAmtPerHead = driverLoadingCharge / (billBook.getLoaders().size() - 1);
-				billBook.setLoadingAmountPerHead(loadingAmtPerHead);
+				Double loadingAmtPerHead = loadingAmount / billBook.getLoaders().size();
+				billBook.setDriverLoadingCharges(loadingAmtPerHead);
+			//	Double loadingAmtPerHead = driverLoadingCharge / (billBook.getLoaders().size() - 1);
+				billBook.setLoadingAmountPerHead(loadingAmtPerHead); 
 			}
 		}
 

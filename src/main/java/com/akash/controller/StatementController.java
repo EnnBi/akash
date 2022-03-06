@@ -357,11 +357,13 @@ public class StatementController {
 		List<CustomerStatement> dayBookCreditEntries = dayBookRepo.findCustomerCreditsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		List<CustomerStatement> dayBookDebitEntries = dayBookRepo.findCustomerDebitsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		List<CustomerStatement> clearDuesEntries=clearDuesRepository.findCustomerClearDuesBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
+		List<CustomerStatement> goodsReturnEntries=goodsReturnRepository.findCustomerGoodsReturnBetweenDates(search.getUser(), search.getStartDate(),search.getEndDate());
 		List<CustomerStatement> statements = new ArrayList<>();
 		statements.addAll(billBookCreditEntries);
 		statements.addAll(dayBookCreditEntries);
 		statements.addAll(dayBookDebitEntries);
 		statements.addAll(clearDuesEntries);
+		statements.addAll(goodsReturnEntries);
 		
 		Collections.sort(statements, (a, b) -> a.getDate().compareTo(b.getDate()));
 		

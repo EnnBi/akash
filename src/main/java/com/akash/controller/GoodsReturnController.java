@@ -1,6 +1,8 @@
 package com.akash.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
 
@@ -94,7 +96,9 @@ public class GoodsReturnController {
 	@RequestMapping(value = "/add", params = "save", method = RequestMethod.POST)
 	public String update(@ModelAttribute("goodsReturn") GoodsReturn  goodsReturn, Model model,
 			RedirectAttributes redirectAttributes) {
-		
+		if(Objects.isNull(goodsReturn.getDate())) {
+			goodsReturn.setDate(LocalDate.now());
+		}
 
 		 goodsReturn.getSales().forEach(s ->{
 		 s.setBillBook(null);

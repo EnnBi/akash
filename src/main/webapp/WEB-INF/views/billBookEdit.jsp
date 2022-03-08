@@ -349,6 +349,34 @@ line-height: 10px
 								</div>
 							</div>
 						</div>
+						
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right"> Previous Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+											readonly="true" id="prevBalance" value="${prevBalance}" />
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right"> Total Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+											readonly="true"  id="totalBalance" value="${finalBalance}" />
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="form-group row float-right">
 							<input type="submit" class="btn btn-success btn-fw"
 								value="Submit" name="save">
@@ -558,8 +586,12 @@ $('#unloaders').select2();
 							var total = Number($('#total').val());
 							var paid = Number($('#paid').val());
 							var discount = Number($('#discount').val());
-							$('#balance').val(total -discount-paid);
+							var balance = total -discount-paid;
+							$('#balance').val(balance);
+							var prevbal= Number($('#prevBalance').val());
+							$('#totalBalance').val(balance + prevbal);
 						}
+						
 
 						$('#receipt').change(function() {
 							var number = $(this).val();

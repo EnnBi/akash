@@ -271,14 +271,18 @@ public class StatementController {
 		Double balance = previousBalance;
 		this.prevBalance=Double.valueOf(df.format(previousBalance));
 		
-		List<LabourStatement> billBookEntries = billBookRepo.findLabourBillBookDebits(labour, search.getStartDate(), search.getEndDate());
+		List<LabourStatement> billBookEntriesBoth = billBookRepo.findLabourBillBookDebitsBoth(labour, search.getStartDate(), search.getEndDate());
+		List<LabourStatement> billBookEntriesLoading = billBookRepo.findLabourBillBookDebitsLoading(labour, search.getStartDate(), search.getEndDate());
+		List<LabourStatement> billBookEntriesUnloading = billBookRepo.findLabourBillBookDebitsUnloading(labour, search.getStartDate(), search.getEndDate());
 		List<LabourStatement> manufactureEntries = manufactureRepo.findLabourDebits(labour, search.getStartDate(), search.getEndDate());
 		List<LabourStatement> dayDebitEntries = dayBookRepo.findLabourStatementDebitsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		List<LabourStatement> dayCreditEntries = dayBookRepo.findLabourStatementCreditsBetweenDates(search.getUser(),search.getStartDate(),search.getEndDate());
 		
 		List<LabourStatement> statements = new ArrayList<>();
 		
-		statements.addAll(billBookEntries);
+		statements.addAll(billBookEntriesBoth);
+		statements.addAll(billBookEntriesLoading);
+		statements.addAll(billBookEntriesUnloading);
 		statements.addAll(manufactureEntries);
 		statements.addAll(dayDebitEntries);
 		statements.addAll(dayCreditEntries);

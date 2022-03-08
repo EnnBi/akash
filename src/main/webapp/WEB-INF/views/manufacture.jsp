@@ -299,12 +299,7 @@ $(document).ready(function(){
 			$('#cpu').val(data);
 		});
 	}
-	
-	$(".date").flatpickr({
-		enableTime: false,
-	    dateFormat: "d-m-Y",
-		defaultDate: new Date()
-	});
+
 });
 </script>
 		

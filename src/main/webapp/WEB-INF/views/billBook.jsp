@@ -29,7 +29,7 @@ line-height: 10px
 				<div class="alert alert-danger" role="alert">${fail}</div>
 			</c:if>
 			<form:form action="${pageContext.request.contextPath}/bill-book/save" class="form-sample"
-				modelAttribute="billBook" method="post">
+				modelAttribute="billBook" method="post" id="billForm" >
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group row">
@@ -46,6 +46,7 @@ line-height: 10px
 							<div class="col-sm-8">
 								<form:input type="text" class="form-control date" path="date"
 									required="required" />
+									
 							</div>
 						</div>
 					</div>
@@ -186,7 +187,7 @@ line-height: 10px
 						<div class="form-group row">
 							<div class="col-sm-3">
 								<form:select class="form-control product" required="required"
-									path="sales[0].product">
+									path="sales[0].product" id="products">
 									<form:option value="">Select Products</form:option>
 									<form:options items="${products}" itemLabel="name"
 										itemValue="id" />
@@ -348,10 +349,37 @@ line-height: 10px
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right"> Previous Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+											readonly="true" id="prevBalance" />
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-12 ">
+								<div class="form-group row">
+									<div class="col-sm-6 col-form-label">
+										<label class="float-right"> Total Balance:</label>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+											readonly="true"  id="totalBalance" />
+									</div>
+								</div>
+							</div>
+						</div>
 						
 						<div class="form-group row float-right">
 							<input type="submit" class="btn btn-success btn-fw"
-								value="Submit" name="save">
+								value="Submit" name="save" id="addBill">
 						</div>
 						<div class="form-group row float-right">
 							<input type="submit" class="btn btn-primary btn-fw" style="margin-right: 2rem;"
@@ -409,6 +437,7 @@ line-height: 10px
 		$('#customer').select2();
 		$('#loaders').select2();
 		$('#unloaders').select2();
+		$('#products').select2();
 		
 		$("#add").click(function(){
 			$(".sales-row:last").clone().insertAfter(".sales-row:last");
@@ -559,6 +588,8 @@ line-height: 10px
 							var carraige = $('#carraige').val() ? $('#carraige')
 									.val()
 									: 0;
+
+									
 							amount += Number(loadingAmt);
 							amount += Number(unloadingAmt);
 							amount += Number(carraige);
@@ -571,7 +602,10 @@ line-height: 10px
 							var total = Number($('#total').val());
 							var paid = Number($('#paid').val());
 							var discount = Number($('#discount').val());
-							$('#balance').val(total -discount-paid);
+							var balance = total -discount-paid;
+							$('#balance').val(balance);
+							var prevbal= Number($('#prevBalance').val());
+							$('#totalBalance').val(balance + prevbal);
 						}
 
 						$('#receipt').change(function() {
@@ -668,9 +702,14 @@ line-height: 10px
 							}
 						});
 					});
+					
+					
+					
+					
 
 	 
 });
+	
 	
 	
 </script>

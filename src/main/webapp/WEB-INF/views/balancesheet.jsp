@@ -20,7 +20,7 @@
 <div class="col-lg-12 grid-margin">
 	<div class="card">
 		<div class="card-body">
-			<form action="${pageContext.request.contextPath}/balanceSheet" method="post" >
+			<form:form modelAttribute="balanceSheet" action="${pageContext.request.contextPath}/balanceSheet" method="post" >
 			
 				
 				<div class="row">
@@ -29,20 +29,33 @@
 							<label class="col-sm-3 col-form-label">Person Type</label>
 							
 							
-								<select name="userType" class="form-control"  required="required">
-									<option value="">Select Any Person Type</option>
-                                     <c:forEach items="${userTypes}" var="user">
-                                     <c:choose>
-                                     <c:when test="${user.name == users}">
-                                     <option value="${user.name}" selected="selected">${user.name}</option>
-                                     </c:when>
-                                     <c:otherwise>
-									<option value="${user.name}">${user.name}</option>
-									</c:otherwise>
-									</c:choose>
-									</c:forEach>
-								</select>
+								<form:select path="userType" class="form-control"  required="required">
+									<form:option value="">Select Any Person Type</form:option>
+									<form:options items="${userTypes}" itemLabel="name"
+										itemValue="name" />
+								</form:select>
 						</div>
+						
+						<div class="row">
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">Start Date</label>
+							<div class="col-sm-8">
+								<form:input type="text" class="form-control date" path="startDate"
+									required="required" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group row">
+							<label class="col-sm-3 col-form-label">End Date</label>
+							<div class="col-sm-8">
+								<form:input type="text" class="form-control date" path="endDate"
+									required="required" />
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="form-group row float-right">
 					<button class="btn btn-success btn-fw" type="submit" id="Search" name="view" style="margin-right: 2rem;">Submit</button>
 				</div>
@@ -51,7 +64,7 @@
 				</div>
 				</div>
 				</div>
-			</form>
+			</form:form>
 		</div>
 	</div>
 </div>

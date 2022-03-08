@@ -139,6 +139,8 @@ public class BillBookController {
 	public String update(@PathVariable("id") long id, Model model) {
 
 		BillBook billBook = billBookRepository.findById(id).orElse(null);
+		Double finalBalance = getBalance(billBook.getCustomer().getId());
+		Double prevBalance = finalBalance - billBook.getBalance();
 		model.addAttribute("billBook", billBook);
 		String[] userTypes = { Constants.CUSTOMER, Constants.CONTRACTOR };
 		model.addAttribute("customers", appUserRepository.findByUserType_NameInAndActive(userTypes, true));
@@ -151,6 +153,10 @@ public class BillBookController {
 		model.addAttribute("sites", siteRepository.findAll());
 		model.addAttribute("sizes", sizeRepository.findAll());
 		model.addAttribute("labourGroups", labourGroupRepository.findAll());
+		model.addAttribute("finalBalance",finalBalance);
+		model.addAttribute("prevBalance",prevBalance);
+		
+		
 		return "billBookEdit";
 	}
 
@@ -259,7 +265,7 @@ public class BillBookController {
 			} else {
 				Double driverUnloadingCharge = unloadingAmount * 0.4;
 				billBook.setDriverUnloadingCharges(driverUnloadingCharge);
-				Double labourUnloadingCharge = (unloadingAmount * 0.6)/ (billBook.getLoaders().size() - 1);
+				Double labourUnloadingCharge = (unloadingAmount * 0.6)/ (billBook.getUnloaders().size() - 1);
 				billBook.setUnloadingAmountPerHead(labourUnloadingCharge);
 			}
 

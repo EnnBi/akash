@@ -38,8 +38,14 @@ public interface BillBookRepository extends CrudRepository<BillBook,Long>,BillBo
 	@Query("Select Sum(b.unloadingAmountPerHead) from BillBook b where :labour MEMBER OF b.unloaders and b.date between :startDate and :endDate")
 	Double sumOfLabourUnloading(@Param("labour") AppUser labour,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 
-	@Query("Select new com.akash.entity.LabourStatement(b.date,b.loadingAmountPerHead,b.unloadingAmountPerHead,b.receiptNumber,'"+Constants.BILLBOOK+"') from BillBook b where (:labour Member Of b.loaders) and  (b.date between :startDate and :endDate)")
-	List<LabourStatement> findLabourBillBookDebits(@Param("labour") AppUser labour,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
+	@Query("Select new com.akash.entity.LabourStatement(b.date,b.loadingAmountPerHead,b.unloadingAmountPerHead,b.receiptNumber,'"+Constants.BILLBOOK+"') from BillBook b where (:labour Member Of b.loaders and :labour Member Of b.unloaders)  and  (b.date between :startDate and :endDate)")
+	List<LabourStatement> findLabourBillBookDebitsBoth(@Param("labour") AppUser labour,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
+	
+	@Query("Select new com.akash.entity.LabourStatement(b.date,b.loadingAmountPerHead,b.receiptNumber,'"+Constants.BILLBOOK+"') from BillBook b where (:labour Member Of b.loaders and :labour Not Member Of b.unloaders)  and  (b.date between :startDate and :endDate)")
+	List<LabourStatement> findLabourBillBookDebitsLoading(@Param("labour") AppUser labour,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
+	
+	@Query("Select new com.akash.entity.LabourStatement(b.unloadingAmountPerHead,b.date,b.receiptNumber,'"+Constants.BILLBOOK+"') from BillBook b where (:labour Member Of b.unloaders and :labour Not Member Of b.loaders)  and  (b.date between :startDate and :endDate)")
+	List<LabourStatement> findLabourBillBookDebitsUnloading(@Param("labour") AppUser labour,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);
 
 	@Query("Select Sum(b.total) from BillBook b where b.customer.id = :id and b.date between :startDate and :endDate")
 	Double sumOfCustomerDebits(@Param("id") long id,@Param("startDate") LocalDate startDate,@Param("endDate") LocalDate endDate);

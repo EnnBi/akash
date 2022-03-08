@@ -14,15 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.akash.entity.AppUser;
 import com.akash.entity.BalanceSheet;
+import com.akash.entity.StatementSearch;
 import com.akash.repository.AppUserRepository;
 import com.akash.repository.BillBookRepository;
 import com.akash.repository.ClearDuesRepository;
@@ -73,33 +76,35 @@ public class BalanceSheetController {
 		
 
 		model.addAttribute("userTypes", userTypeRepository.findAll());
+		model.addAttribute("balanceSheet",new StatementSearch());
 
 		return "balancesheet";
 
 	}
 	@PostMapping(params="view")
-	public String getBalanceSheet(@RequestParam("userType") String usertype,Model model,HttpSession session) {
-	model.addAttribute("users", usertype);
+	public String getBalanceSheet(@ModelAttribute("balanceSheet") StatementSearch search,Model model,HttpSession session) {
+	
 	   model.addAttribute("userTypes", userTypeRepository.findAll());
 	   Map<String,Object> map = new HashMap<>();	
-		switch(usertype) {
+	   
+		switch(search.getUserType()) {
 		case Constants.CUSTOMER:
-			map = getCustomerBalanceSheet();
+			map = getCustomerBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		case Constants.CONTRACTOR:
-			map = getCustomerBalanceSheet();
+			map = getCustomerBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		case Constants.DRIVER:
-			map= getDriverBalanceSheet();
+			map= getDriverBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		case Constants.DEALER:
-			map = getDealerBalanceSheet();
+			map = getDealerBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		case Constants.LABOUR:
-			map = getLabourBalanceSheet();
+			map = getLabourBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		case Constants.OWNER:
-			map =getOwnerBalanceSheet();
+			map =getOwnerBalanceSheet(search.getStartDate(),search.getEndDate());
 			break;
 		default:
 			break;	
@@ -117,37 +122,37 @@ public class BalanceSheetController {
 	}
 	
 	@PostMapping(params = "excel")
-	public void exportToExcelBalanceSheet(@RequestParam("userType") String usertype, Model model,HttpServletResponse response,HttpSession session) {
-		session.setAttribute("userType", usertype);
+	public void exportToExcelBalanceSheet(@ModelAttribute("balanceSheet") StatementSearch search, Model model,HttpServletResponse response,HttpSession session) {
+		
 		   model.addAttribute("userTypes", userTypeRepository.findAll());
 		   Map<String,Object> map = new HashMap<>();		
-			switch(usertype) {
+			switch(search.getUserType()) {
 			case Constants.CUSTOMER:
-				 map = getCustomerBalanceSheet();
+				 map = getCustomerBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			case Constants.CONTRACTOR:
-				 map = getCustomerBalanceSheet();
+				 map = getCustomerBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			case Constants.DRIVER:
-				 map = getDriverBalanceSheet();
+				 map = getDriverBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			case Constants.DEALER:
-				 map = getDealerBalanceSheet();
+				 map = getDealerBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			case Constants.LABOUR:
-				 map = getLabourBalanceSheet();
+				 map = getLabourBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			case Constants.OWNER:
-				 map = getOwnerBalanceSheet();
+				 map = getOwnerBalanceSheet(search.getStartDate(),search.getEndDate());
 				break;
 			default:
 				break;	
 			
 			}
-		generateStatementExcel(map,response,usertype);
+		generateStatementExcel(map,response,search.getUserType());
 	}
 
-	public Map<String, Object> getCustomerBalanceSheet() {
+	public Map<String, Object> getCustomerBalanceSheet(LocalDate startDate,LocalDate endDate) {
 		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.CUSTOMER, Constants.CONTRACTOR };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
@@ -159,10 +164,10 @@ public class BalanceSheetController {
 			BalanceSheet balanceSheet=new BalanceSheet(); 
 			balanceSheet.setUser(appUser);
 			System.out.println("appuserName" +appUser.getName());
-			Double credit=CommonMethods.getCustomerCredit(appUser.getId(), LocalDate.MIN, LocalDate.now(),billBookRepository,dayBookRepo,goodsReturnRepository,clearDuesRepo);
+			Double credit=CommonMethods.getCustomerCredit(appUser.getId(),startDate,endDate,billBookRepository,dayBookRepo,goodsReturnRepository,clearDuesRepo);
 			balanceSheet.setCredit(credit);
 			totalCredit+=credit;
-			Double debit=CommonMethods.getCustomerDebit(appUser.getId(),LocalDate.MIN,LocalDate.now(), dayBookRepo );
+			Double debit=CommonMethods.getCustomerDebit(appUser.getId(),startDate,endDate, dayBookRepo );
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
 		     Double balance=credit-debit;
@@ -181,7 +186,7 @@ public class BalanceSheetController {
 		
 	}
 	
-	public Map<String, Object> getDriverBalanceSheet() {
+	public Map<String, Object> getDriverBalanceSheet(LocalDate startDate,LocalDate endDate) {
 		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.DRIVER };
 		
@@ -194,10 +199,10 @@ public class BalanceSheetController {
 			BalanceSheet balanceSheet=new BalanceSheet(); 
 			balanceSheet.setUser(appUser);
 			System.out.println("appuserName" +appUser.getName());
-			Double credit=CommonMethods.getDriverCredit(appUser.getId(), LocalDate.MIN, LocalDate.now(),dayBookRepo);
+			Double credit=CommonMethods.getDriverCredit(appUser.getId(),startDate,endDate,dayBookRepo);
 			balanceSheet.setCredit(credit);
 			totalCredit+=credit;
-			Double debit=CommonMethods.getDriverDebit(appUser.getId(),LocalDate.MIN,LocalDate.now(), dayBookRepo,billBookRepository,appUserRepo );
+			Double debit=CommonMethods.getDriverDebit(appUser.getId(),startDate,endDate, dayBookRepo,billBookRepository,appUserRepo );
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
 		     Double balance=debit-credit;
@@ -215,7 +220,7 @@ public class BalanceSheetController {
 		return map;
 		
 	}
-	public Map<String, Object> getOwnerBalanceSheet() {
+	public Map<String, Object> getOwnerBalanceSheet(LocalDate startDate,LocalDate endDate) {
 		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.OWNER };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
@@ -227,10 +232,10 @@ public class BalanceSheetController {
 			BalanceSheet balanceSheet=new BalanceSheet(); 
 			balanceSheet.setUser(appUser);
 			System.out.println("appuserName" +appUser.getName());
-			Double credit=CommonMethods.getOwnerCredit(appUser.getId(), LocalDate.MIN, LocalDate.now(),dayBookRepo,appUserRepo);
+			Double credit=CommonMethods.getOwnerCredit(appUser.getId(),startDate,endDate,dayBookRepo,appUserRepo);
 			balanceSheet.setCredit(credit);
 			totalCredit+=credit;
-			Double debit=CommonMethods.getOwnerDebit(appUser.getId(),LocalDate.MIN,LocalDate.now(), dayBookRepo,appUserRepo );
+			Double debit=CommonMethods.getOwnerDebit(appUser.getId(),startDate,endDate, dayBookRepo,appUserRepo );
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
 		     Double balance=debit-credit;
@@ -249,7 +254,7 @@ public class BalanceSheetController {
 		
 	}
 	
-	public Map<String, Object> getLabourBalanceSheet() {
+	public Map<String, Object> getLabourBalanceSheet(LocalDate startDate,LocalDate endDate) {
 		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.LABOUR };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
@@ -261,10 +266,10 @@ public class BalanceSheetController {
 			BalanceSheet balanceSheet=new BalanceSheet(); 
 			balanceSheet.setUser(appUser);
 			System.out.println("appuserName" +appUser.getName());
-			Double credit=CommonMethods.getLabourCredit(appUser.getId(), LocalDate.MIN, LocalDate.now(), dayBookRepo);
+			Double credit=CommonMethods.getLabourCredit(appUser.getId(), startDate, endDate, dayBookRepo);
 			balanceSheet.setCredit(credit);
 			totalCredit+=credit;
-			Double debit=CommonMethods.getLabourDebit(appUser.getId(),LocalDate.MIN, LocalDate.now(), dayBookRepo, appUserRepo, billBookRepository, manufactureRepository);
+			Double debit=CommonMethods.getLabourDebit(appUser.getId(),startDate, endDate, dayBookRepo, appUserRepo, billBookRepository, manufactureRepository);
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
 		     Double balance=debit-credit;
@@ -282,7 +287,7 @@ public class BalanceSheetController {
 		
 	}
 	
-	public Map<String, Object> getDealerBalanceSheet() {
+	public Map<String, Object> getDealerBalanceSheet(LocalDate startDate,LocalDate endDate) {
 		Map<String, Object> map = new HashMap<>();
 		String[] usertypes= { Constants.DEALER };
 		List<AppUser> users=appUserRepo.findAllAppUsersOnType(usertypes);
@@ -294,10 +299,10 @@ public class BalanceSheetController {
 			BalanceSheet balanceSheet=new BalanceSheet(); 
 			balanceSheet.setUser(appUser);
 			System.out.println("appuserName" +appUser.getName());
-			Double credit=CommonMethods.getDealerCredit(appUser.getId(), LocalDate.MIN,LocalDate.now(), dayBookRepo);
+			Double credit=CommonMethods.getDealerCredit(appUser.getId(), startDate,endDate, dayBookRepo);
 			balanceSheet.setCredit(credit);
 			totalCredit+=credit;
-			Double debit=CommonMethods.getDealerDebit(appUser.getId(), LocalDate.MIN, LocalDate.now(), dayBookRepo, rawMaterialRepo);
+			Double debit=CommonMethods.getDealerDebit(appUser.getId(),startDate,endDate, dayBookRepo, rawMaterialRepo);
 		     balanceSheet.setDebit(debit);
 		     totalDebit+=debit;
 		     Double balance=debit-credit;

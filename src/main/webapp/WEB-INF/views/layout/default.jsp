@@ -280,7 +280,17 @@
 	<script type="text/javascript">
 	$(".date").flatpickr({
 	    enableTime: false,
-	    dateFormat: "d-m-Y"
+	    dateFormat: "d-m-Y",
+	    onOpen: function(selectedDates, dateStr, instance) {
+	        $(instance.input).prop('readonly', true);
+	      },
+	      onClose: function(selectedDates, dateStr, instance) {
+	        $(instance.input).prop('readonly', false);
+	        $(instance.input).blur();
+	      },
+	      onReady: function(selectedDates, dateStr, instance) {
+	    	  $(instance.input).prop('readonly', false);
+	      }
 	});
 	</script>
 </body>

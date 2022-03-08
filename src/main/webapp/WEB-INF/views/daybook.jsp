@@ -223,13 +223,7 @@
 			$("#person").text('Transferred By');
 			$('#transactionType').val('Expenditure');
 		}
-      if($('#idDayBook').val()<1){
-		$(".date").flatpickr({
-			enableTime: false,
-	   		dateFormat: "d-m-Y",
-			defaultDate: new Date()
-		});
-	}
+	
 	});
 
 	$('#rev-tab').click(function() {

@@ -52,6 +52,26 @@ public class LabourStatement {
 		this.reference="BB-"+receiptNumber;
 		calculateDebit();
 	}
+	
+	public LabourStatement(LocalDate date, Double loading,String receiptNumber, String type) {
+		super();
+		this.date = date;
+		this.loading = loading;
+		this.unloading=Double.valueOf(0);
+		this.type = type;
+		this.reference="BB-"+receiptNumber;
+		calculateDebit();
+	}
+	
+	public LabourStatement(Double unloading,LocalDate date,String receiptNumber, String type) {
+		super();
+		this.date = date;
+		this.loading = Double.valueOf(0);;
+		this.unloading=unloading;
+		this.type = type;
+		this.reference="BB-"+receiptNumber;
+		calculateDebit();
+	}
 
 	public LabourStatement(Double debit, String reference, LocalDate date, String transactionNumber,String type) {
 		this.debit = debit;

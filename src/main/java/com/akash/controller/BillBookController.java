@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -98,7 +99,9 @@ public class BillBookController {
 		model.addAttribute("labourGroups", labourGroupRepository.findAll());
 		if (model.asMap().containsKey("print")) {
 			BillBook billBook = (BillBook) model.asMap().get("billBookPrint");
-			printBillBook(billBook, response);
+			Double prevBalance=  (Double) model.asMap().get("prevBalance");
+			Double finalBalance=  (Double) model.asMap().get("finalBalance");
+			printBillBook(billBook, response,prevBalance,finalBalance);
 		}
 
 		return "billBook";
@@ -122,7 +125,7 @@ public class BillBookController {
 	}
 
 	@RequestMapping(value = "/save", params = "print", method = RequestMethod.POST)
-	public String printAndSaveBillBook(@ModelAttribute("billBook") BillBook billBook, Model model,
+	public String printAndSaveBillBook(@ModelAttribute("billBook") BillBook billBook,@RequestParam("prevBalance") Double prevBalance, @RequestParam("finalBalance") Double finalBalance, Model model,
 			RedirectAttributes redirectAttributes, HttpServletResponse response) {
 		if (billBook.getVehicle() != null)
 			billBook.setDriver(billBook.getVehicle().getDriver());
@@ -131,6 +134,8 @@ public class BillBookController {
 		redirectAttributes.addFlashAttribute("success", "Bill Book saved successfully");
 		redirectAttributes.addFlashAttribute("print", true);
 		redirectAttributes.addFlashAttribute("billBookPrint", billBook);
+		redirectAttributes.addFlashAttribute("prevBalance", prevBalance);
+		redirectAttributes.addFlashAttribute("finalBalance",finalBalance);
 		return "redirect:/bill-book";
 
 	}
@@ -202,9 +207,9 @@ public class BillBookController {
 	}
 
 	@GetMapping("/print/{id}")
-	public void printBillBook(@PathVariable long id, HttpServletResponse response) {
+	public void printBillBook(@PathVariable long id,@RequestParam("prevBalance") Double prevBalance,@RequestParam("finalBalance") Double finalBalance, HttpServletResponse response) {
 		BillBook billBook = billBookRepository.findById(id).get();
-		printBillBook(billBook, response);
+		printBillBook(billBook, response,prevBalance,finalBalance);
 	}
 
 	public void pagination(int page, BillBookSearch billBookSearch, Model model,HttpSession session) {
@@ -272,7 +277,7 @@ public class BillBookController {
 		}
 	}
 
-	public void printBillBook(BillBook billBook, HttpServletResponse response) {
+	public void printBillBook(BillBook billBook, HttpServletResponse response,Double prevBalance,Double finalBalance) {
 		InputStream mainJasperStream = this.getClass().getResourceAsStream("/BillBook.jasper");
 		InputStream subJasperStream = this.getClass().getResourceAsStream("/SalesDetail.jasper");
 
@@ -282,6 +287,8 @@ public class BillBookController {
 
 			Map<String, Object> params = new HashMap<>();
 			params.put("sales", salesReport);
+			params.put("prevBalance", prevBalance);
+			params.put("finalBalance", finalBalance);
 			JRDataSource data = new JRBeanCollectionDataSource(Arrays.asList(billBook));
 			JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, params, data);
 			response.setContentType("application/pdf");

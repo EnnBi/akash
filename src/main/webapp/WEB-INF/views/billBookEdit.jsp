@@ -358,7 +358,7 @@ line-height: 10px
 									</div>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" 
-											readonly="true" id="prevBalance" value="${prevBalance}" />
+											readonly="true" id="prevBalance" value="${prevBalance}" name="prevBalance" />
 									</div>
 								</div>
 							</div>
@@ -372,7 +372,7 @@ line-height: 10px
 									</div>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" 
-											readonly="true"  id="totalBalance" value="${finalBalance}" />
+											readonly="true"  id="totalBalance" value="${finalBalance}" name="finalBalance" />
 									</div>
 								</div>
 							</div>

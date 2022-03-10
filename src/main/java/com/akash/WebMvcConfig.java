@@ -25,9 +25,12 @@ class MyInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null)
 		        										.build().toUriString();
-		if (LocalDate.now().isAfter(LocalDate.of(2022,02, 01)))
+
+		if (LocalDate.now().isAfter(LocalDate.of(2022,04, 01)))
+
 			if (!(request.getRequestURI().contains("/dashboard") || request.getRequestURI().contains("/resources"))) {
 				response.sendRedirect(baseUrl+"/dashboard");
 				return false;

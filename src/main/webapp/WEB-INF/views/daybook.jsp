@@ -136,7 +136,7 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group row">
-									<label class="col-sm-4 col-form-label" id="person">Received
+									<label class="col-sm-4 col-form-label" id="person1">Received
 										By</label>
 									<div class="col-sm-8">
 										<form:input type="text" class="form-control"
@@ -215,12 +215,12 @@
 		var transactionType=$('#transactionType').val();
 		if(transactionType=='Revenue' || !transactionType){
 			$("#accountNumberLbl").text('Received Into');
-			$("#person").text('Received By');
+			$("#person1").text('Received By');
 			$('#transactionType').val('Revenue');
 		}
 		else{
 			$("#accountNumberLbl").text('Transferred From');
-			$("#person").text('Transferred By');
+			$("#person1").text('Transferred By');
 			$('#transactionType').val('Expenditure');
 		}
 	
@@ -229,13 +229,13 @@
 	$('#rev-tab').click(function() {
 		console.log("I m here");
 		$("#accountNumberLbl").text('Received Into');
-		$("#person").text('Received By');
+		$("#person1").text('Received By');
 		$('#transactionType').val('Revenue');
 	});
 	$('#exp-tab').click(function() {
-		console.log("I m here");
+		console.log("I m here abrar");
+		$("#person1").text('Transferred By');
 		$("#accountNumberLbl").text('Transferred From');
-		$("#person").text('Transferred By');
 		$('#transactionType').val('Expenditure');
 	});
 

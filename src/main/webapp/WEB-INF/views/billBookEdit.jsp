@@ -265,7 +265,7 @@ line-height: 10px
 										<label class="float-right">Loading:</label>
 									</div>
 									<div class="col-sm-4">
-										<form:input type="text" class="form-control" pattern="^[0-9]\d{0,9}(\.\d{1,3})?%?$"
+										<form:input type="text" class="form-control" 
 											path="loadingAmount" id="loadingAmount" />
 									</div>
 								</div>
@@ -278,7 +278,7 @@ line-height: 10px
 										<label class="float-right">Unloading:</label>
 									</div>
 									<div class="col-sm-4">
-										<form:input type="text" class="form-control" pattern="^[0-9]\d{0,9}(\.\d{1,3})?%?$"
+										<form:input type="text" class="form-control" 
 											path="unloadingAmount" id="unloadingAmount" />
 									</div>
 								</div>
@@ -292,7 +292,7 @@ line-height: 10px
 									</div>
 									<div class="col-sm-4">
 										<form:input type="text" class="form-control" path="carraige"
-											id="carraige" pattern="^[0-9]\d{0,9}(\.\d{1,3})?%?$" />
+											id="carraige"  />
 									</div>
 								</div>
 							</div>

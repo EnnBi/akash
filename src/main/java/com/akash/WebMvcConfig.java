@@ -10,13 +10,14 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		//registry.addInterceptor(new MyInterceptor());
+		registry.addInterceptor(new MyInterceptor());
 	}
 }
 
@@ -24,9 +25,11 @@ class MyInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null)
+		        										.build().toUriString();
 		if (LocalDate.now().isAfter(LocalDate.of(2022,02, 01)))
 			if (!(request.getRequestURI().contains("/dashboard") || request.getRequestURI().contains("/resources"))) {
-				response.sendRedirect("/dashboard");
+				response.sendRedirect(baseUrl+"/dashboard");
 				return false;
 			}
 		return true;

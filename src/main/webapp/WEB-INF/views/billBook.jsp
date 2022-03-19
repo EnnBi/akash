@@ -437,11 +437,12 @@ line-height: 10px
 		$('#customer').select2();
 		$('#loaders').select2();
 		$('#unloaders').select2();
-		$('#products').select2();
+		
 		
 		$("#add").click(function(){
 			$(".sales-row:last").clone().insertAfter(".sales-row:last");
 			$(".sales-row:last").find(':input').val('');
+			
 			updateIndex();
 		});
 

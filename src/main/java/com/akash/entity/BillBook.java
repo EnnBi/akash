@@ -31,7 +31,7 @@ public class BillBook {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
 	private long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	AppUser customer;
@@ -63,9 +63,9 @@ public class BillBook {
 	@Column(name = "total")
 	private Double total;
 
-	@Column(name="Discount")
+	@Column(name = "Discount")
 	private Double discount;
-	
+
 	@Column(name = "paid")
 	private Double paid;
 
@@ -115,12 +115,12 @@ public class BillBook {
 
 	@ManyToOne
 	LabourGroup labourGroup;
-	
+
 	@ManyToOne
 	LabourGroup unloaderLabourGroup;
-	
+
 	@Transient
-	DecimalFormat df = new DecimalFormat("#.##"); 
+	DecimalFormat df = new DecimalFormat("#.##");
 
 	public long getId() {
 		return id;
@@ -179,30 +179,21 @@ public class BillBook {
 	}
 
 	public Double getLoadingAmount() {
-		if(loadingAmount != null) {
-			return loadingAmount;
-		}
-		else {
-                return Double.valueOf(0.0);			
-		}
+		return loadingAmount;
 	}
 
 	public void setLoadingAmount(Double loadingAmount) {
-		this.loadingAmount = Objects.nonNull(loadingAmount)?Double.valueOf(df.format(loadingAmount)):Double.valueOf(0);
+		this.loadingAmount = Objects.nonNull(loadingAmount) ? Double.valueOf(df.format(loadingAmount))
+				: Double.valueOf(0);
 	}
 
 	public Double getUnloadingAmount() {
-		if(unloadingAmount != null) {
-			return unloadingAmount;
-		}
-		else {
-                return Double.valueOf(0.0);			
-		}
-		
+		return unloadingAmount;
 	}
 
 	public void setUnloadingAmount(Double unloadingAmount) {
-		this.unloadingAmount = Objects.nonNull(unloadingAmount)?Double.valueOf(df.format(unloadingAmount)):Double.valueOf(0);
+		this.unloadingAmount = Objects.nonNull(unloadingAmount) ? Double.valueOf(df.format(unloadingAmount))
+				: Double.valueOf(0);
 	}
 
 	public Double getTotal() {
@@ -210,7 +201,7 @@ public class BillBook {
 	}
 
 	public void setTotal(Double total) {
-		this.total = Objects.nonNull(total)?Double.valueOf(df.format(total)):Double.valueOf(0);
+		this.total = Objects.nonNull(total) ? Double.valueOf(df.format(total)) : Double.valueOf(0);
 	}
 
 	public Double getPaid() {
@@ -218,7 +209,7 @@ public class BillBook {
 	}
 
 	public void setPaid(Double paid) {
-		this.paid = Objects.nonNull(paid)?Double.valueOf(df.format(paid)):Double.valueOf(0);
+		this.paid = Objects.nonNull(paid) ? Double.valueOf(df.format(paid)) : Double.valueOf(0);
 	}
 
 	public Double getBalance() {
@@ -226,7 +217,7 @@ public class BillBook {
 	}
 
 	public void setBalance(Double balance) {
-		this.balance = Objects.nonNull(balance)?Double.valueOf(df.format(balance)):Double.valueOf(0);
+		this.balance = Objects.nonNull(balance) ? Double.valueOf(df.format(balance)) : Double.valueOf(0);
 	}
 
 	public List<Sales> getSales() {
@@ -254,17 +245,11 @@ public class BillBook {
 	}
 
 	public Double getCarraige() {
-		if(carraige != null) {
-			return carraige;
-		}
-		else {
-			return Double.valueOf(0.0);
-		}
-		
+		return carraige;
 	}
 
 	public void setCarraige(Double carraige) {
-		this.carraige = Objects.nonNull(carraige)?Double.valueOf(df.format(carraige)):Double.valueOf(0);
+		this.carraige = Objects.nonNull(carraige) ? Double.valueOf(df.format(carraige)) : Double.valueOf(0);
 	}
 
 	public Double getLoadingAmountPerHead() {
@@ -272,7 +257,9 @@ public class BillBook {
 	}
 
 	public void setLoadingAmountPerHead(Double loadingAmountPerHead) {
-		this.loadingAmountPerHead = Objects.nonNull(loadingAmountPerHead)?Double.valueOf(df.format(loadingAmountPerHead)):Double.valueOf(0);
+		this.loadingAmountPerHead = Objects.nonNull(loadingAmountPerHead)
+				? Double.valueOf(df.format(loadingAmountPerHead))
+				: Double.valueOf(0);
 	}
 
 	public Double getUnloadingAmountPerHead() {
@@ -280,7 +267,9 @@ public class BillBook {
 	}
 
 	public void setUnloadingAmountPerHead(Double unloadingAmountPerHead) {
-		this.unloadingAmountPerHead = Objects.nonNull(unloadingAmountPerHead)?Double.valueOf(df.format(unloadingAmountPerHead)):Double.valueOf(0);
+		this.unloadingAmountPerHead = Objects.nonNull(unloadingAmountPerHead)
+				? Double.valueOf(df.format(unloadingAmountPerHead))
+				: Double.valueOf(0);
 	}
 
 	public String getSites() {
@@ -312,7 +301,9 @@ public class BillBook {
 	}
 
 	public void setDriverLoadingCharges(Double driverLoadingCharges) {
-		this.driverLoadingCharges = Objects.nonNull(driverLoadingCharges)?Double.valueOf(df.format(driverLoadingCharges)):Double.valueOf(0);
+		this.driverLoadingCharges = Objects.nonNull(driverLoadingCharges)
+				? Double.valueOf(df.format(driverLoadingCharges))
+				: Double.valueOf(0);
 	}
 
 	public Double getDriverUnloadingCharges() {
@@ -320,7 +311,9 @@ public class BillBook {
 	}
 
 	public void setDriverUnloadingCharges(Double driverUnloadingCharges) {
-		this.driverUnloadingCharges = Objects.nonNull(driverUnloadingCharges)?Double.valueOf(df.format(driverUnloadingCharges)):Double.valueOf(0);
+		this.driverUnloadingCharges = Objects.nonNull(driverUnloadingCharges)
+				? Double.valueOf(df.format(driverUnloadingCharges))
+				: Double.valueOf(0);
 	}
 
 	public AppUser getDriver() {
@@ -330,15 +323,15 @@ public class BillBook {
 	public void setDriver(AppUser driver) {
 		this.driver = driver;
 	}
-		
+
 	public Double getDiscount() {
 		return discount;
 	}
 
 	public void setDiscount(Double discount) {
-		this.discount = Objects.nonNull(discount)?Double.valueOf(df.format(discount)):Double.valueOf(0);
+		this.discount = Objects.nonNull(discount) ? Double.valueOf(df.format(discount)) : Double.valueOf(0);
 	}
-	
+
 	public LabourGroup getUnloaderLabourGroup() {
 		return unloaderLabourGroup;
 	}

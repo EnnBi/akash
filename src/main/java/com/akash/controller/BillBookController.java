@@ -268,10 +268,16 @@ public class BillBookController {
 				Double unloadingAmtPerHead = unloadingAmount / billBook.getUnloaders().size();
 				billBook.setUnloadingAmountPerHead(unloadingAmtPerHead);
 			} else {
+				if(billBook.getUnloaders().size()>1) {
 				Double driverUnloadingCharge = unloadingAmount * 0.4;
 				billBook.setDriverUnloadingCharges(driverUnloadingCharge);
 				Double labourUnloadingCharge = (unloadingAmount * 0.6)/ (billBook.getUnloaders().size() - 1);
 				billBook.setUnloadingAmountPerHead(labourUnloadingCharge);
+				}
+				else {
+					billBook.setDriverUnloadingCharges(unloadingAmount);
+					billBook.setUnloadingAmountPerHead(Double.valueOf(0));
+				}
 			}
 
 		}

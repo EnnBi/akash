@@ -200,17 +200,17 @@ public class StatementController {
 		statements.sort(Comparator.comparing(DriverStatement::getDate));
 		for (DriverStatement s : statements) {
 			if (Constants.BILLBOOK.equals(s.getType())) {
-				s.setBalance(balance - s.getDebit());
-				balance = balance - s.getDebit();
+				s.setBalance(balance + s.getDebit());
+				balance = balance + s.getDebit();
 				this.totalDebit=this.totalDebit+s.getDebit();
 			} else {
 				if (s.getCredit() != null) {
-					s.setBalance(balance + s.getCredit());
-					balance = balance + s.getCredit();
+					s.setBalance(balance - s.getCredit());
+					balance = balance - s.getCredit();
 					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
-					s.setBalance(balance - s.getDebit());
-					balance = balance - s.getDebit();
+					s.setBalance(balance + s.getDebit());
+					balance = balance + s.getDebit();
 					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
@@ -241,17 +241,17 @@ public class StatementController {
 		
 		for (DealerStatement s : statements) {
 			if (Constants.RAW_MATERIAL.equals(s.getType())) {
-				s.setBalance(balance - s.getDebit());
-				balance = balance - s.getDebit();
+				s.setBalance(balance + s.getDebit());
+				balance = balance + s.getDebit();
 				this.totalDebit=this.totalDebit+s.getDebit();
 			} else {
 				if (s.getCredit() != null) {
-					s.setBalance(balance + s.getCredit());
-					balance = balance + s.getCredit();
+					s.setBalance(balance - s.getCredit());
+					balance = balance - s.getCredit();
 					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
-					s.setBalance(balance - s.getDebit());
-					balance = balance - s.getDebit();
+					s.setBalance(balance + s.getDebit());
+					balance = balance + s.getDebit();
 					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
@@ -291,22 +291,22 @@ public class StatementController {
 		
 		for (LabourStatement s : statements) {
 			if (Constants.MANUFACTURE.equals(s.getType())) {
-				s.setBalance(balance - s.getDebit());
-				balance = balance - s.getDebit();
+				s.setBalance(balance + s.getDebit());
+				balance = balance + s.getDebit();
 				this.totalDebit=this.totalDebit+s.getDebit();
 			}
 			else if(Constants.BILLBOOK.equals(s.getType())){
-				s.setBalance(balance-s.getDebit());
-				balance=balance-s.getDebit();
+				s.setBalance(balance+s.getDebit());
+				balance=balance+s.getDebit();
 				this.totalDebit=this.totalDebit+s.getDebit();
 			}else {
 				if (s.getCredit() != null) {
-					s.setBalance(balance + s.getCredit());
-					balance = balance + s.getCredit();
+					s.setBalance(balance - s.getCredit());
+					balance = balance - s.getCredit();
 					this.totalCredit=this.totalCredit+s.getCredit();
 				} else {
-					s.setBalance(balance - s.getDebit());
-					balance = balance - s.getDebit();
+					s.setBalance(balance + s.getDebit());
+					balance = balance + s.getDebit();
 					this.totalDebit=this.totalDebit+s.getDebit();
 				}
 
@@ -329,14 +329,14 @@ public class StatementController {
 		
 		for (OwnerStatement s : statements) {
 			if(Constants.EXPENDITURE.equals(s.getTransactionType())){
-				s.setBalance(balance-s.getAmount());
+				s.setBalance(balance+s.getAmount());
 				s.setDebit(s.getAmount());
-				balance=balance-s.getAmount();
+				balance=balance+s.getAmount();
 				this.totalDebit=this.totalDebit+s.getDebit();
 				}else{
-				s.setBalance(balance+s.getAmount());
+				s.setBalance(balance-s.getAmount());
 				s.setCredit(s.getAmount());
-				balance=balance+s.getAmount();
+				balance=balance-s.getAmount();
 				this.totalCredit=this.totalCredit+s.getCredit();
 			}
 		} 

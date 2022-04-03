@@ -29,7 +29,7 @@ class MyInterceptor implements HandlerInterceptor {
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null)
 		        										.build().toUriString();
 
-		if (LocalDate.now().isAfter(LocalDate.of(2022,04, 01)))
+		if (LocalDate.now().isAfter(LocalDate.of(2022,06, 01)))
 
 			if (!(request.getRequestURI().contains("/dashboard") || request.getRequestURI().contains("/resources"))) {
 				response.sendRedirect(baseUrl+"/dashboard");

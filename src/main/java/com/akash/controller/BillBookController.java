@@ -120,8 +120,10 @@ public class BillBookController {
 
 		billBook.getSales().forEach(s -> s.setBillBook(billBook));
 		billBookRepository.save(billBook);
-		redirectAttributes.addFlashAttribute("success", "Bill Book saved successfully");
-		return "redirect:/bill-book";
+		//redirectAttributes.addFlashAttribute("success", "Bill Book saved successfully");
+		redirectAttributes.addFlashAttribute("bill", true);
+		redirectAttributes.addFlashAttribute("bill-book", billBook);
+		return "redirect:/day-book";
 	}
 
 	@RequestMapping(value = "/save", params = "print", method = RequestMethod.POST)

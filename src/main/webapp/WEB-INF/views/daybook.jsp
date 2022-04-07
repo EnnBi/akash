@@ -49,11 +49,19 @@
 									<form:hidden path="transactionType" id="transactionType"/>
 									<label class="col-sm-4 col-form-label">Person Type</label>
 									<div class="col-sm-8">
-										<form:select class="form-control" path="" id="type">
-											<form:option value="">Select Person Type</form:option>
-											<form:options items="${userTypes}" itemLabel="name"
-												itemValue="name" />
-										</form:select>
+									<select class="form-control" path="" id="type">
+											<option value="">Select Person Type</option>
+											<c:forEach items="${userTypes}" var="userType">
+											<c:choose>
+											<c:when test="${dayBook.user.userType.id == userType.id}">
+											<option value="${userType.name}" selected="selected">${userType.name}</option>
+											</c:when>
+											<c:otherwise>
+											<option value="${userType.name}">${userType.name}</option>
+											</c:otherwise>
+											</c:choose>
+											</c:forEach>
+										</select>
 									</div>
 								</div>
 							</div>

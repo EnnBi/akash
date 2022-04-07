@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.akash.entity.BillBook;
 import com.akash.entity.DayBook;
 import com.akash.entity.DayBookSearch;
 import com.akash.repository.AppUserRepository;
@@ -39,8 +40,25 @@ public class DayBookController {
 	
 	@GetMapping
 	public String add(Model model) {
+		if(model.asMap().containsKey("bill")) {
+			BillBook billBook = (BillBook) model.asMap().get("bill-book");
+			System.out.println("in if conditionnnnn");
+			DayBook dayBook=new DayBook();
+			dayBook.setUser(billBook.getCustomer());
+			dayBook.setDate(billBook.getDate());
+			dayBook.setAmount(billBook.getPaid());
+			model.addAttribute("dayBook", dayBook);
+			String[] userTypes = { Constants.CUSTOMER, Constants.CONTRACTOR };
+			model.addAttribute("customers", appUserRepository.findAppUsersOnType(userTypes, true));
+		
+			
+		}
+		else {
 		model.addAttribute("dayBook", new DayBook());
+		
+		}
 		model.addAttribute("userTypes", userTypeRepository.findAll());
+		
 		model.addAttribute("accounts",appUserRepository.findByUserType_NameAndActive(Constants.OWNER,true));
 		return "daybook";
 	} 

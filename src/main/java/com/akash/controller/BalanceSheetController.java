@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -176,11 +177,11 @@ public class BalanceSheetController {
 		balanceSheets.add(balanceSheet);
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
-		
+		List<BalanceSheet> newBalanceSheets=balanceSheets.stream().filter(b->b.getBalance()>Double.valueOf(50)).collect(Collectors.toList());
 		map.put("totalCredit",totalCredit);
 		map.put("totalDebit",totalDebit);
 		map.put("totalBalance",totalBalance);
-		map.put("balanceSheets",balanceSheets);
+		map.put("balanceSheets",newBalanceSheets);
 		
 		return map;
 		
@@ -211,11 +212,12 @@ public class BalanceSheetController {
 		balanceSheets.add(balanceSheet);
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
+		List<BalanceSheet> newBalanceSheets=balanceSheets.stream().filter(b->b.getBalance()>Double.valueOf(50)).collect(Collectors.toList());
 		
 		map.put("totalCredit",totalCredit);
 		map.put("totalDebit",totalDebit);
 		map.put("totalBalance",totalBalance);
-		map.put("balanceSheets",balanceSheets);
+		map.put("balanceSheets",newBalanceSheets);
 		
 		return map;
 		
@@ -244,11 +246,11 @@ public class BalanceSheetController {
 		balanceSheets.add(balanceSheet);
 		}
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
-		
+		List<BalanceSheet> newBalanceSheets=balanceSheets.stream().filter(b->b.getBalance()>Double.valueOf(50)).collect(Collectors.toList());
 		map.put("totalCredit",CommonMethods.format(totalCredit));
 		map.put("totalDebit",CommonMethods.format(totalDebit));
 		map.put("totalBalance",CommonMethods.format(totalBalance) );
-		map.put("balanceSheets",balanceSheets);
+		map.put("balanceSheets",newBalanceSheets);
 		
 		return map;
 		
@@ -277,11 +279,11 @@ public class BalanceSheetController {
 		     totalBalance +=balance;
 		balanceSheets.add(balanceSheet);
 		}
-		
+		List<BalanceSheet> newBalanceSheets=balanceSheets.stream().filter(b->b.getBalance()>Double.valueOf(50)).collect(Collectors.toList());
 		map.put("totalCredit",totalCredit);
 		map.put("totalDebit",totalDebit);
 		map.put("totalBalance",totalBalance);
-		map.put("balanceSheets",balanceSheets);
+		map.put("balanceSheets",newBalanceSheets);
 		
 		return map;
 		
@@ -311,11 +313,11 @@ public class BalanceSheetController {
 		balanceSheets.add(balanceSheet);
 		} 
 		System.out.println("balancesheetSizeee" + balanceSheets.size());
-		
+		List<BalanceSheet> newBalanceSheets=balanceSheets.stream().filter(b->b.getBalance()>Double.valueOf(50)).collect(Collectors.toList());
 		map.put("totalCredit",totalCredit);
 		map.put("totalDebit",totalDebit);
 		map.put("totalBalance",totalBalance);
-		map.put("balanceSheets",balanceSheets);
+		map.put("balanceSheets",newBalanceSheets);
 		
 		return map;
 	}

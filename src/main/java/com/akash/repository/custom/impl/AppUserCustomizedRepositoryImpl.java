@@ -31,7 +31,7 @@ public class AppUserCustomizedRepositoryImpl implements AppUserCustomizedReposit
 		
 		cq.select(root).where(predicates.toArray(new Predicate[] {}));
 		cq.distinct(true);
-		//cq.orderBy(cb.desc(root.get("date")),cb.desc(root.get("id")));
+		cq.orderBy(cb.asc(root.get("name")));
 
 		Query query=em.createQuery(cq);
 		
